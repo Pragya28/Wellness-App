@@ -1,2 +1,87 @@
 {% extends "base.html" %} {% block title %} Sign Up {% endblock %} {% block
-content %} {% endblock %}
+content %}
+<form method="post">
+  <h3 class="display-3 text-center">Sign Up</h3>
+  <div class="form-group">
+    <label for="name"> Full Name </label>
+    <input
+      type="text"
+      name="name"
+      id="name"
+      class="form-control"
+      placeholder="Enter Full Name"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="username"> Username </label>
+    <input
+      type="text"
+      name="username"
+      id="username"
+      class="form-control"
+      placeholder="Enter Username"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="email"> Email Address </label>
+    <input
+      type="email"
+      name="email"
+      id="email"
+      class="form-control"
+      placeholder="Enter Email Address"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="password"> Password </label>
+    <input
+      type="password"
+      name="password1"
+      id="password1"
+      class="form-control"
+      placeholder="Enter Password"
+      required
+    />
+  </div>
+  <div class="form-group">
+    <label for="password"> Confirm Password </label>
+    <input
+      type="password"
+      name="password2"
+      id="password2"
+      class="form-control"
+      placeholder="Confirm Password"
+      required
+    />
+  </div>
+  <br />
+  <div class="form-control">
+    <label for="gender">Gender&ensp;</label>
+    <div class="form-check form-check-inline">
+      <input
+        type="radio"
+        name="genderOptions"
+        id="male"
+        class="form-check-input"
+        value="male"
+      />
+      <label for="male" class="form-check-label">Male</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        type="radio"
+        name="genderOptions"
+        id="female"
+        class="form-check-input"
+        value="female"
+      />
+      <label for="female" class="form-check-label">Female</label>
+    </div>
+  </div>
+  <br />
+  <button type="submit" class="btn btn-primary">Create Account</button>
+</form>
+{% endblock %}
