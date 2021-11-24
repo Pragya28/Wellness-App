@@ -11,13 +11,33 @@ def client():
 def test_start(client):
     resp = client.get("/")
     assert resp.status_code == 200
-    print(resp.json)
     assert b"Wellness App" in resp.get_data()
+    assert b"Login" in resp.get_data()
+    assert b"Sign Up" in resp.get_data()
+    # assert b"Profile" not in resp.get_data()
+    # assert b"Logout" not in resp.get_data()
+    # assert b"BMI Calculator" not in resp.get_data()
+    # assert b"Calorie Counter" not in resp.get_data()
+    # assert b"Sleeping Hours" not in resp.get_data()
+    # assert b"Water Intake" not in resp.get_data()
+    # assert b"Enriching Activity" not in resp.get_data()
+    # assert b"Learning" not in resp.get_data()
 
 
 def test_home(client):
     resp = client.get("/home")
     assert resp.status_code == 200
+    assert b"Wellness App" in resp.get_data()
+    assert b"Profile" in resp.get_data()
+    assert b"Logout" in resp.get_data()
+    assert b"BMI Calculator" in resp.get_data()
+    assert b"Calorie Counter" in resp.get_data()
+    assert b"Sleeping Hours" in resp.get_data()
+    assert b"Water Intake" in resp.get_data()
+    assert b"Enriching Activity" in resp.get_data()
+    assert b"Learning" in resp.get_data()
+    # assert b"Login" not in resp.get_data()
+    # assert b"Sign Up" not in resp.get_data()
 
 
 def test_profile(client):
