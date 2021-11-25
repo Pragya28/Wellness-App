@@ -1,12 +1,13 @@
 import pytest
 from flask import Flask
-from app import app
+from website import create_app
 
 
-@pytest.fixture
-def client():
-    return app.test_client()
-
+def test_config(app):
+    assert not create_app().testing
+    assert create_app({'TESTING': True}).testing
+    assert 'dummy' in (app.config['SQLALCHEMY_DATABASE_URI']) 
+    
 
 def test_start(client):
     resp = client.get("/")
@@ -65,7 +66,10 @@ def test_signup(client):
     assert b'Username' in resp.get_data()
     assert b'Password' in resp.get_data()
     assert b'Confirm Password' in resp.get_data()
+    assert b'Age' in resp.get_data()
     assert b'Gender' in resp.get_data()
+    assert b'Height' in resp.get_data()
+    assert b'Weight' in resp.get_data()
 
 
 def test_bmi(client):
