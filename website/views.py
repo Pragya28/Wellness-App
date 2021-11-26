@@ -5,6 +5,8 @@ views = Blueprint('views', __name__)
 
 @views.route('/', methods=['GET', 'POST'])
 def start():
+    if current_user.is_authenticated:
+        return redirect(url_for("views.home"))
     if request.method == "POST":
         if request.form.get("login") == "login":
             return redirect(url_for('auth.login'))
@@ -15,7 +17,6 @@ def start():
 @views.route('/home')
 @login_required
 def home():
-    print(current_user.is_authenticated)
     return render_template("home.html", user=current_user)
 
 @views.route('/profile')

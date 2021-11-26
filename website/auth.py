@@ -9,6 +9,9 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect(url_for("views.home"))
+
     if request.method == "POST":
         username = request.form.get('username')
         password = request.form.get('password')
@@ -29,10 +32,14 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash("You were logged out", category="success")
     return redirect(url_for('views.start'))
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for("views.home"))
+
     if request.method == 'POST':
         fullname = request.form.get('name')
         username = request.form.get('username')
@@ -53,7 +60,7 @@ def signup():
             message = "This email already has an account"
             flash(message, category="error")
         elif pwd1 != pwd2:
-            message = "Passwords don't match"
+            message = "Unmatched passwords"
             flash(message, category="error")
         elif len(fullname.split()) < 2:
             message = "Please enter your full name"
@@ -85,8 +92,7 @@ def signup():
             db.session.add(user)
             db.session.commit()
             login_user(user, remember=True)
-            status = True
-            message = "Account created!"
+            message = "Account created"
             flash(message, category="success")
             return redirect(url_for('views.home'))
         

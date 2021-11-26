@@ -13,6 +13,7 @@ content %}
         id="name"
         class="form-control"
         placeholder="Enter Full Name"
+        required
       />
     </div>
   </div>
@@ -27,6 +28,7 @@ content %}
         id="username"
         class="form-control"
         placeholder="Enter Username"
+        required
       />
     </div>
   </div>
@@ -41,6 +43,7 @@ content %}
         id="email"
         class="form-control"
         placeholder="Enter Email Address"
+        required
       />
     </div>
   </div>
@@ -55,6 +58,7 @@ content %}
         id="password1"
         class="form-control"
         placeholder="Enter Password"
+        required
       />
     </div>
   </div>
@@ -69,6 +73,7 @@ content %}
         id="password2"
         class="form-control"
         placeholder="Confirm Password"
+        required
       />
     </div>
   </div>
@@ -83,6 +88,7 @@ content %}
         id="age"
         class="form-control"
         placeholder="Enter Age"
+        required
       />
     </div>
   </div>
@@ -98,6 +104,7 @@ content %}
           id="male"
           class="form-check-input"
           value="male"
+          required
         />
         <label for="male" class="form-check-label">Male</label>
       </div>
@@ -108,6 +115,7 @@ content %}
           id="female"
           class="form-check-input"
           value="female"
+          required
         />
         <label for="female" class="form-check-label">Female</label>
       </div>
@@ -124,6 +132,7 @@ content %}
         id="height"
         class="form-control"
         placeholder="Enter Height (in cms)"
+        required
       />
     </div>
   </div>
@@ -138,10 +147,13 @@ content %}
         id="weight"
         class="form-control"
         placeholder="Enter Weight (in kgs)"
+        required
       />
     </div>
   </div>
   <br />
-  <button type="submit" class="btn btn-primary">Create Account</button>
+  <button type="submit" class="btn btn-primary" value="submit">
+    Create Account
+  </button>
 </form>
 {% endblock %}

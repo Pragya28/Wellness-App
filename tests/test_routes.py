@@ -1,12 +1,14 @@
 import pytest
 from flask import Flask
 from website import create_app
+from .auth_functions import login
 
 
 def test_config(app):
     assert not create_app().testing
-    assert create_app({'TESTING': True}).testing
+    assert create_app("../tests/test_config.json").testing
     assert 'dummy' in (app.config['SQLALCHEMY_DATABASE_URI']) 
+    assert "test" == app.config['TEST_USERNAME'] 
     
 
 def test_start(client):
@@ -15,19 +17,22 @@ def test_start(client):
     assert b"Wellness App" in resp.get_data()
     assert b"Login" in resp.get_data()
     assert b"Sign Up" in resp.get_data()
-    # assert b"Profile" not in resp.get_data()
-    # assert b"Logout" not in resp.get_data()
-    # assert b"BMI Calculator" not in resp.get_data()
-    # assert b"Calorie Counter" not in resp.get_data()
-    # assert b"Sleeping Hours" not in resp.get_data()
-    # assert b"Water Intake" not in resp.get_data()
-    # assert b"Enriching Activity" not in resp.get_data()
-    # assert b"Learning" not in resp.get_data()
+    assert b"Profile" not in resp.get_data()
+    assert b"Logout" not in resp.get_data()
+    assert b"BMI Calculator" not in resp.get_data()
+    assert b"Calorie Counter" not in resp.get_data()
+    assert b"Sleeping Hours" not in resp.get_data()
+    assert b"Water Intake" not in resp.get_data()
+    assert b"Enriching Activity" not in resp.get_data()
+    assert b"Learning" not in resp.get_data()
 
 
-def test_home(client):
+def test_home(client, app):
     resp = client.get("/home")
+    assert resp.status_code != 200
+    resp = login(client, app.config['TEST_USERNAME'], app.config['TEST_PASSWORD'])
     assert resp.status_code == 200
+
     assert b"Wellness App" in resp.get_data()
     assert b"Profile" in resp.get_data()
     assert b"Logout" in resp.get_data()
@@ -37,39 +42,13 @@ def test_home(client):
     assert b"Water Intake" in resp.get_data()
     assert b"Enriching Activity" in resp.get_data()
     assert b"Learning" in resp.get_data()
-    # assert b"Login" not in resp.get_data()
-    # assert b"Sign Up" not in resp.get_data()
+    assert b"Login" not in resp.get_data()
+    assert b"Sign Up" not in resp.get_data()
 
 
 def test_profile(client):
     resp = client.get("/profile")
     assert resp.status_code == 200
-
-
-def test_login(client):
-    resp = client.get("/login")
-    assert resp.status_code == 200
-    assert b'Username' in resp.get_data()
-    assert b'Password' in resp.get_data()
-
-
-def test_logout(client):
-    resp = client.get("/logout")
-    assert resp.status_code == 302 # found but redirected as there is no specific page for logout and it redirects to home page
-
-
-def test_signup(client):
-    resp = client.get("/sign-up")
-    assert resp.status_code == 200
-    assert b'Full Name' in resp.get_data()
-    assert b'Email Address' in resp.get_data()
-    assert b'Username' in resp.get_data()
-    assert b'Password' in resp.get_data()
-    assert b'Confirm Password' in resp.get_data()
-    assert b'Age' in resp.get_data()
-    assert b'Gender' in resp.get_data()
-    assert b'Height' in resp.get_data()
-    assert b'Weight' in resp.get_data()
 
 
 def test_bmi(client):

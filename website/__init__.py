@@ -1,22 +1,25 @@
 from flask import Flask
-from os import path, environ
+from os import path, environ, remove
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+import json
 
 db = SQLAlchemy()
 
 def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
-    db_name = environ.get('DB_NAME')
-    app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_name}'
 
     if test_config is not None:
-        app.config.from_mapping(test_config)
-    
+        app.config.from_file(test_config, load=json.load)
+        db_name = app.config["DB_NAME"]
+    else:
+        db_name = environ.get('DB_NAME')
+        app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_name}'
+
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
-    
+
     from .views import views
     from .auth import auth
 
