@@ -1,5 +1,5 @@
 from flask import Flask
-from os import path, environ, remove
+from os import path, environ, remove, makedirs
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import json
