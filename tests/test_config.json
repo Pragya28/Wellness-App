@@ -1,0 +1,13 @@
+{
+  "TESTING": "True",
+  "SQLALCHEMY_DATABASE_URI": "sqlite:///dummy.db",
+  "DB_NAME": "dummy.db",
+  "TEST_USERNAME": "test",
+  "TEST_PASSWORD": "test",
+  "TEST_FULLNAME": "TEST USER",
+  "TEST_EMAIL": "user@test.com",
+  "TEST_AGE": "20",
+  "TEST_HEIGHT": "150",
+  "TEST_WEIGHT": "50",
+  "TEST_GENDER": "male"
+}
