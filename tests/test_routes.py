@@ -5,7 +5,6 @@ from .auth_functions import login
 
 
 def test_config(app):
-    assert not create_app().testing
     assert create_app("test_config.json").testing
     assert 'dummy' in (app.config['SQLALCHEMY_DATABASE_URI']) 
     assert "test" == app.config['TEST_USERNAME'] 
