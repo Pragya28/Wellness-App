@@ -7,7 +7,7 @@ import json
 db = SQLAlchemy()
 
 def create_app(test_config=None):
-    app = Flask(__name__, instance_relative_config=True)
+    app = Flask(__name__)
     app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 
     if test_config is not None:
