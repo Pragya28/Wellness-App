@@ -9,10 +9,26 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        user = User.query.filter_by(username=username).first()
+        if user:
+            if check_password_hash(user.password, password):
+                flash("Logged in successfully", category='success')
+                login_user(user, remember=True)
+                return redirect(url_for('views.home'))
+            else:
+                flash('Incorrect password, try again', category='error')
+        else:
+            flash('Username does not exist.', category='error')
+    return render_template("login.html", user=current_user)
 
 @auth.route('/logout')
+@login_required
 def logout():
+    logout_user()
     return redirect(url_for('views.start'))
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
@@ -30,23 +46,30 @@ def signup():
         userbyusername = User.query.filter_by(username=username).first()
         userbyemail = User.query.filter_by(email=email).first()
 
-        status = False
         if userbyusername:
             message = "Username already exists"
+            flash(message, category="error")
         elif userbyemail:
             message = "This email already has an account"
+            flash(message, category="error")
         elif pwd1 != pwd2:
             message = "Passwords don't match"
+            flash(message, category="error")
         elif len(fullname.split()) < 2:
             message = "Please enter your full name"
+            flash(message, category="error")
         elif age < 0:
             message = "Please enter valid age"
+            flash(message, category="error")
         elif height < 0:
             message = "Please enter valid height"
+            flash(message, category="error")
         elif weight < 0:
             message = "Please enter valid weight"
+            flash(message, category="error")
         elif gender is None:
             message = "Select your gender"
+            flash(message, category="error")
         else:
             user = User(
                 username=username, 
@@ -64,11 +87,8 @@ def signup():
             login_user(user, remember=True)
             status = True
             message = "Account created!"
-        
-        if status:
             flash(message, category="success")
             return redirect(url_for('views.home'))
-        else:
-            flash(message, category="error")
         
-    return render_template('signup.html')
+        
+    return render_template('signup.html', user=current_user)
