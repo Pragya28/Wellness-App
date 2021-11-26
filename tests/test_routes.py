@@ -79,4 +79,3 @@ def test_activity(client):
 def test_learning(client):
     resp = client.get("/learning")
     assert resp.status_code == 200
-
