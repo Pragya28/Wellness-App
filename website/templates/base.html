@@ -24,6 +24,7 @@
     >
       <div class="container-fluid">
         <a class="navbar-brand" href="/home">Wellness App</a>
+        {% if user.is_authenticated %}
         <div class="nav-item dropdown ms-auto">
           <a
             class="nav-link dropdown-toggle"
@@ -49,6 +50,7 @@
             <a href="/logout" class="dropdown-item" id="logout"> Logout </a>
           </div>
         </div>
+        {% else %}
         <button
           class="navbar-toggler"
           type="button"
@@ -68,24 +70,58 @@
             </a>
           </div>
         </div>
+        {% endif %}
       </div>
     </nav>
+
+    {% if user.is_authenticated %}
     <nav
-      class="
-        nav nav-tabs nav-justified
-        navbar-light
-        bg-light
-        flex-column flex-md-row
-      "
+      class="nav navbar-light bg-light navbar-expand-md"
       aria-label="Navigation Options"
     >
-      <a class="nav-link" href="/bmi">BMI Calculator</a>
-      <a class="nav-link" href="/calorie">Calorie Counter</a>
-      <a class="nav-link" href="/sleep">Sleeping Hours</a>
-      <a class="nav-link" href="/water">Water Intake</a>
-      <a class="nav-link" href="/activity">Enriching Activity</a>
-      <a class="nav-link" href="/learning">Learning</a>
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbar"
+        aria-controls="navbar"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse nav-tabs nav-justified" id="navbar">
+        <a class="nav-link" href="/bmi">BMI Calculator</a>
+        <a class="nav-link" href="/calorie">Calorie Counter</a>
+        <a class="nav-link" href="/sleep">Sleeping Hours</a>
+        <a class="nav-link" href="/water">Water Intake</a>
+        <a class="nav-link" href="/activity">Enriching Activity</a>
+        <a class="nav-link" href="/learning">Learning</a>
+      </div>
     </nav>
+    {% endif %} {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ message }}
+      <button
+        type="button"
+        class="btn-close ms-auto"
+        data-bs-dismiss="alert"
+        aria-label="Close"
+      ></button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
 
     <div class="container">{% block content %} {% endblock %}</div>
 
