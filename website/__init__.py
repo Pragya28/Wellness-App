@@ -1,5 +1,5 @@
 from flask import Flask
-from os import path, environ, remove
+from os import path, environ, remove, makedirs
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 import json
@@ -7,7 +7,7 @@ import json
 db = SQLAlchemy()
 
 def create_app(test_config=None):
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
     app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 
     if test_config is not None:
