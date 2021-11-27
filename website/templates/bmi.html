@@ -1,2 +1,9 @@
 {% extends "base.html" %} {% block title %} BMI Calculator {% endblock %} {%
-block content %} {% endblock %}
+block content %}
+<div class="display-6">BMI Calculator</div>
+<div class="text-center">
+  Your weight = {{ user.weight }} kg <br />
+  Your height = {{ user.height }} cm <br />
+  BMI = {{ user.bmi }}
+</div>
+{% endblock %}

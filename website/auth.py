@@ -3,7 +3,8 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
-from sqlalchemy.sql import func
+from datetime import date
+from .calculations import calculate_bmi
 
 auth = Blueprint('auth', __name__)
 
@@ -85,7 +86,9 @@ def signup():
                 height=height, 
                 weight=weight, 
                 password=generate_password_hash(pwd1, method='sha256'),
-                join_date = func.now()
+                join_date = date.today(),
+                bmi = calculate_bmi(height, weight),
+                wellness=0.0
                 )
             db.session.add(user)
             db.session.commit()

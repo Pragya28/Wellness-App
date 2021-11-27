@@ -1,5 +1,6 @@
 import pytest
 from flask import Flask
+from flask_login import current_user
 from website import create_app
 from .auth_functions import login
 
@@ -44,6 +45,8 @@ def test_home(client, app):
     assert b"Login" not in resp.get_data()
     assert b"Sign Up" not in resp.get_data()
 
+    assert app.config['TEST_USERNAME'].encode() in resp.get_data()
+        
 
 def test_profile(client):
     resp = client.get("/profile")
