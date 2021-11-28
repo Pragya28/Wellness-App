@@ -8,12 +8,12 @@ db = SQLAlchemy()
 
 def create_app(test_config=None):
     app = Flask(__name__)
-    app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
 
     if test_config is not None:
         app.config.from_file(test_config, load=json.load)
         db_name = app.config["DB_NAME"]
     else:
+        app.config['SECRET_KEY'] = environ.get('SECRET_KEY')
         db_name = environ.get('DB_NAME')
         app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_name}'
 
