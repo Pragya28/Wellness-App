@@ -1,2 +1,46 @@
-{% extends "base.html" %} {% block title %} BMI Calculator {% endblock %} {%
-block content %} {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        background-image: url("water1.jpg");
+        background-repeat: no-repeat;
+        background-size: 1600px;
+    }
+    h1{
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 90px;
+    }
+    p{
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 40px;
+    }
+    div{
+        font-size: 40px;
+        
+    }
+    p1{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+</style>
+<body>
+    <h1>BMI ( Body Mass INdex ) :-</h1>
+    <p>>Body Mass Index (BMI) is a person’s weight in kilograms divided by the square of height in meters.</p>
+    <p>>A high BMI can indicate high body fatness. </p>
+    <p>>BMI screens for weight categories that may lead to health problems, but it does not diagnose the body fatness or health of an individual.</p>
+    <div>
+    <p1>**Input your height and weight**</p1>
+    <input type="text" name="myInput" height="60" width="" required>
+    <p2>x</p2>
+    <input type="text" name="myInput" height="60" width="" required>
+    
+    <button type="button" name="myButton">Calculate BMI</button>
+    
+    </div>
+</body>
+</html>
