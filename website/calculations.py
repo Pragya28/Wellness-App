@@ -7,4 +7,3 @@ def calculate_calories(cal_data):
 
 def calculate_water(glasses):
     return int(glasses)*250/1000.0
-
