@@ -52,10 +52,31 @@ class Data(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     date = db.Column(db.Date)
-    calorie = db.Column(db.Float)
-    sleep = db.Column(db.Float)
-    water = db.Column(db.Float)
+    calorie = db.Column(db.Float, default=0.0)
+    sleep = db.Column(db.Integer, default=0)
+    water = db.Column(db.Float, default=0.0)
     activity = db.Column(db.String(1000))
-    activity_rating = db.Column(db.Integer)
+    activity_rating = db.Column(db.Integer,  default=0)
     learning = db.Column(db.String(1000))
-    learning_rating = db.Column(db.Integer)
+    learning_rating = db.Column(db.Integer,  default=0)
+
+    def __init__(self, user_id):
+        self.user_id = user_id
+        self.date = date.today()
+
+    def add_calorie(self, calorie):
+        self.calorie = calorie
+
+    def add_sleep(self, sleep):
+        self.sleep = sleep
+
+    def add_water(self, water):
+        self.water = water
+
+    def add_activity(self, activity, activity_rating):
+        self.activity = activity
+        self.activity_rating = activity_rating
+
+    def add_learning(self, learning, learning_rating):
+        self.learning = learning
+        self.learning_rating = learning_rating

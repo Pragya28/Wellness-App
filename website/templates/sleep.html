@@ -4,27 +4,58 @@ block content %}
   <div class="container">
     <div class="display-6">Sleeping Hours</div>
     <br />
-    <p>
-      >A condition of body and mind that typically recurs for several hours
-      every night.
-    </p>
-    <p>
-      >Where in the nervous system is relatively inactive, the eyes closed, the
-      postural muscles relaxed, and consciousness practically suspended.
-    </p>
-    <p>
-      >Too much of sleep is also bad for health and is known to be a symptom of
-      depression
-    </p>
-    <p>
-      Sleeping very less is also bad for health known an insomnia eventually
-      leading to fatigue
-    </p>
-
-    <p1>**Input the number of hours slept**</p1>
-    <input type="text" name="myInput" height="60" width="" required />
-    <input type="date" name="myInput" value="2021-11-28" />
-    <button type="button" name="myButton">hours slept</button>
+    <ul>
+      <li>
+        <p>
+          A condition of body and mind that typically recurs for several hours
+          every night.
+        </p>
+      </li>
+      <li>
+        <p>
+          Where in the nervous system is relatively inactive, the eyes closed,
+          the postural muscles relaxed, and consciousness practically suspended.
+        </p>
+      </li>
+      <li>
+        <p>
+          Too much of sleep is also bad for health and is known to be a symptom
+          of depression
+        </p>
+      </li>
+      <li>
+        <p>
+          Sleeping very less is also bad for health known an insomnia eventually
+          leading to fatigue
+        </p>
+      </li>
+    </ul>
+    <br />
+    <div class="text-center">
+      {% if hours %} You slept {{hours}} hours today {% endif %}
+    </div>
+    <form method="post">
+      <div class="form-group mb-3 row">
+        <div class="col-sm-2">
+          <label for="sleep" class="col-form-label">
+            Hours you slept today
+          </label>
+        </div>
+        <div class="col-sm-10">
+          <input
+            type="number"
+            name="sleep"
+            id="sleep"
+            class="form-control"
+            placeholder="Enter number of hours you slept"
+            required
+          />
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" value="submit">
+        Submit
+      </button>
+    </form>
   </div>
 </div>
 {% endblock %}
