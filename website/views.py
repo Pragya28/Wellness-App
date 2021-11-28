@@ -81,7 +81,7 @@ def calorie():
     else:
         data = Data(current_user.id)
         data.add_calorie(total)
-        db.session.add()
+        db.session.add(data)
         db.session.commit()
         flash(SAVE_MSG, category="success")
 
@@ -100,7 +100,7 @@ def sleep():
         else:
             data = Data(current_user.id)
             data.add_sleep(hours)
-            db.session.add()
+            db.session.add(data)
             db.session.commit()
             flash(SAVE_MSG, category="success")
     else:
@@ -125,7 +125,7 @@ def water():
         else:
             data = Data(current_user.id)
             data.add_water(amt)
-            db.session.add()
+            db.session.add(data)
             db.session.commit()
             flash(SAVE_MSG, category="success")
     else:
@@ -150,7 +150,7 @@ def activity():
         else:
             data = Data(current_user.id)
             data.add_activity(text, stars)
-            db.session.add()
+            db.session.add(data)
             db.session.commit()
             flash(SAVE_MSG, category="success")
     else:
@@ -177,7 +177,7 @@ def learning():
         else:
             data = Data(current_user.id)
             data.add_learning(text, stars)
-            db.session.add()
+            db.session.add(data)
             db.session.commit()
             flash(SAVE_MSG, category="success")
     else:
