@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from datetime import date
 from .models import CalorieData, Data
 from . import db
-from .calculations import calculate_calories
+from .calculations import calculate_calories, calculate_water
 
 views = Blueprint('views', __name__)
 
@@ -90,12 +90,13 @@ def sleep():
         if data:
             data.add_sleep(hours)
             db.session.commit()
+            flash("Your data has been updated", category="success")
         else:
             data = Data(current_user.id)
             data.add_sleep(hours)
             db.session.add()
             db.session.commit()
-        flash("Your data has been recorded", category="success")
+            flash("Your data has been recorded", category="success")
     else:
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
@@ -107,11 +108,52 @@ def sleep():
 @views.route('/water', methods=["GET", "POST"])
 @login_required
 def water():
-    return render_template("water.html", user=current_user)
+    if request.method == "POST":
+        glass = request.form.get("water")
+        amt = calculate_water(glass)
+        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+        if data:
+            data.add_water(amt)
+            db.session.commit()
+            flash("Your data has been updated", category="success")
+        else:
+            data = Data(current_user.id)
+            data.add_water(amt)
+            db.session.add()
+            db.session.commit()
+            flash("Your data has been recorded", category="success")
+    else:
+        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+        if data:
+            amt = data.water
+        else:
+            amt = 0
+    return render_template("water.html", user=current_user, amt=amt)
 
 @views.route('/activity', methods=["GET", "POST"])
 @login_required
 def activity():
+    if request.method == "POST":
+        text = request.form.get("activity")
+        amt = calculate_water(glass)
+        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+        if data:
+            data.add_water(amt)
+            db.session.commit()
+            flash("Your data has been updated", category="success")
+        else:
+            data = Data(current_user.id)
+            data.add_water(amt)
+            db.session.add()
+            db.session.commit()
+            flash("Your data has been recorded", category="success")
+    else:
+        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+        if data:
+            amt = data.water
+        else:
+            amt = 0
+    return render_template("water.html", user=current_user, amt=amt)
     return render_template("activity.html", user=current_user)
 
 @views.route('/learning', methods=["GET", "POST"])

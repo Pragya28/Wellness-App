@@ -4,3 +4,6 @@ def calculate_bmi(height, weight):
 def calculate_calories(cal_data):
     cal = [x.calorie for x in cal_data]
     return sum(cal)
+
+def calculate_water(glasses):
+    return int(glasses)*250/1000.0
