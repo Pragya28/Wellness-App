@@ -1,7 +1,68 @@
 {% extends "base.html" %} {% block title %} Enriching Activity {% endblock %} {%
 block content %}
-
-<div class="container">
-  <div class="display-6">Today's Enriching Activity</div>
+<div class="box activity-page">
+  <div class="container">
+    <div class="display-6">Today's Enriching Activity</div>
+    <br />
+    <form method="post">
+      <div class="form-floating">
+        <textarea
+          class="form-control"
+          placeholder="Write about what did you do today here..."
+          id="floatingTextarea"
+          style="height: 250px"
+        ></textarea>
+        <label for="floatingTextarea"
+          >What did you do today which made you happy or satisfied?</label
+        >
+      </div>
+      <br />
+      <div class="form-control text-center">
+        <label for="stars"> How will you rating your satisfaction?</label><br />
+        <div class="stars">
+          <input
+            class="star star-5"
+            id="star-5"
+            type="radio"
+            name="star"
+            value="5"
+          />
+          <label class="star star-5" for="star-5"></label>
+          <input
+            class="star star-4"
+            id="star-4"
+            type="radio"
+            name="star"
+            value="4"
+          />
+          <label class="star star-4" for="star-4"></label>
+          <input
+            class="star star-3"
+            id="star-3"
+            type="radio"
+            name="star"
+            value="3"
+          />
+          <label class="star star-3" for="star-3"></label>
+          <input
+            class="star star-2"
+            id="star-2"
+            type="radio"
+            name="star"
+            value="2"
+          />
+          <label class="star star-2" for="star-2"></label>
+          <input
+            class="star star-1"
+            id="star-1"
+            type="radio"
+            name="star"
+            value="1"
+          />
+          <label class="star star-1" for="star-1"></label>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}

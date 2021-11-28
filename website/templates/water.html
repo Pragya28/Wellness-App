@@ -4,27 +4,57 @@ content %}
   <div class="container">
     <div class="display-6">Water Intake</div>
     <br />
-    <p>
-      >water, a substance composed of the chemical elements hydrogen and oxygen.
-    </p>
-    <p>
-      >Water travels throughout your body carrying nutrients, oxygen, and wastes
-      to and from your cells and organs.
-    </p>
-    <p>
-      >Water keeps your body cool as part of your body's temperature regulating
-      system.
-    </p>
-    <p>
-      Water cushions your joints, and protects your tissues and organs from
-      shock and damage.
-    </p>
-    <div>
-      <p1>**Input the number of glasses drank**</p1>
-      <input type="text" name="myInput" height="60" width="" required />
-      <input type="date" name="myInput" value="2021-11-28" />
-      <button type="button" name="myButton">Glasses consumed</button>
-    </div>
+    <ul>
+      <li>
+        <p>
+          Water, a substance composed of the chemical elements hydrogen and
+          oxygen.
+        </p>
+      </li>
+      <li>
+        <p>
+          Water travels throughout your body carrying nutrients, oxygen, and
+          wastes to and from your cells and organs.
+        </p>
+      </li>
+      <li>
+        <p>
+          Water keeps your body cool as part of your body's temperature
+          regulating system.
+        </p>
+      </li>
+      <li>
+        <p>
+          Water cushions your joints, and protects your tissues and organs from
+          shock and damage.
+        </p>
+      </li>
+    </ul>
+    <form method="post">
+      <div class="form-group mb-3 row">
+        <div class="col-sm-2">
+          <label for="calories" class="col-form-label">
+            Glasses of water consumed today
+          </label>
+        </div>
+        <div class="col-sm-10">
+          <input
+            type="number"
+            name="water"
+            id="water"
+            class="form-control"
+            placeholder="Enter your water intake (in glasses)"
+            required
+          />
+          <div class="form-text">
+            Assuming volume of each glass of water to be 250ml
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" value="submit">
+        Submit
+      </button>
+    </form>
   </div>
 </div>
 
