@@ -69,19 +69,21 @@ def calorie():
             db.session.commit()
             flash("Your exercise is recorded.", category="success")
                 
-        old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today()).all()
-        total = calculate_calories(old_data)
+    old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today()).all()
+    total = calculate_calories(old_data)
 
-        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+    data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
 
-        if data:
-            data.add_calorie(total)
-            db.session.commit()
-        else:
-            data = Data(current_user.id)
-            data.add_calorie(total)
-            db.session.add()
-            db.session.commit()
+    if data:
+        data.add_calorie(total)
+        db.session.commit()
+        flash(UPDATE_MSG, category="success")
+    else:
+        data = Data(current_user.id)
+        data.add_calorie(total)
+        db.session.add()
+        db.session.commit()
+        flash(SAVE_MSG, category="success")
 
     return render_template("calorie.html", user=current_user, data=old_data, total=total)
 
