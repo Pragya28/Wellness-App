@@ -11,14 +11,22 @@ block content %}
           placeholder="Write about what did you do today here..."
           id="floatingTextarea"
           style="height: 250px"
-        ></textarea>
+          name="activity"
+        >
+      {% if text %} {{text}}  {% endif %}
+      </textarea
+        >
         <label for="floatingTextarea"
           >What did you do today which made you happy or satisfied?</label
         >
       </div>
       <br />
       <div class="form-control text-center">
-        <label for="stars"> How will you rating your satisfaction?</label><br />
+        <label for="stars">
+          {% if stars %} You rated today's enriching activity {{stars}} stars.
+          {% else %} How will you rating your satisfaction?{% endif %}
+        </label>
+        <br />
         <div class="stars">
           <input
             class="star star-5"
@@ -62,6 +70,8 @@ block content %}
           <label class="star star-1" for="star-1"></label>
         </div>
       </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
 </div>

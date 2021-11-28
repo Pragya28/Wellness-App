@@ -7,6 +7,10 @@ from .calculations import calculate_calories, calculate_water
 
 views = Blueprint('views', __name__)
 
+SAVE_MSG = "Your data has been recorded"
+UPDATE_MSG = "Your data has been updated"
+
+
 @views.route('/', methods=['GET', 'POST'])
 def start():
     if current_user.is_authenticated:
@@ -90,13 +94,13 @@ def sleep():
         if data:
             data.add_sleep(hours)
             db.session.commit()
-            flash("Your data has been updated", category="success")
+            flash(UPDATE_MSG, category="success")
         else:
             data = Data(current_user.id)
             data.add_sleep(hours)
             db.session.add()
             db.session.commit()
-            flash("Your data has been recorded", category="success")
+            flash(SAVE_MSG, category="success")
     else:
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
@@ -115,13 +119,13 @@ def water():
         if data:
             data.add_water(amt)
             db.session.commit()
-            flash("Your data has been updated", category="success")
+            flash(UPDATE_MSG, category="success")
         else:
             data = Data(current_user.id)
             data.add_water(amt)
             db.session.add()
             db.session.commit()
-            flash("Your data has been recorded", category="success")
+            flash(SAVE_MSG, category="success")
     else:
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
@@ -135,26 +139,28 @@ def water():
 def activity():
     if request.method == "POST":
         text = request.form.get("activity")
-        amt = calculate_water(glass)
+        stars = int(request.form.get("star"))
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
-            data.add_water(amt)
+            data.add_activity(text, stars)
             db.session.commit()
-            flash("Your data has been updated", category="success")
+            flash(UPDATE_MSG, category="success")
         else:
             data = Data(current_user.id)
-            data.add_water(amt)
+            data.add_activity(text, stars)
             db.session.add()
             db.session.commit()
-            flash("Your data has been recorded", category="success")
+            flash(SAVE_MSG, category="success")
     else:
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
-            amt = data.water
+            text = data.activity
+            stars = data.activity_rating
         else:
-            amt = 0
-    return render_template("water.html", user=current_user, amt=amt)
-    return render_template("activity.html", user=current_user)
+            text = ""
+            stars = 0
+        print(text, stars)
+    return render_template("activity.html", user=current_user, text=text, stars=stars)
 
 @views.route('/learning', methods=["GET", "POST"])
 @login_required
