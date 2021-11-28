@@ -3,7 +3,7 @@ from .models import User
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
-from sqlalchemy.sql import func
+from .calculations import calculate_bmi
 
 auth = Blueprint('auth', __name__)
 
@@ -22,8 +22,7 @@ def login():
                 flash("Logged in successfully", category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
-            else:
-                flash('Incorrect password, try again', category='error')
+            flash('Incorrect password, try again', category='error')
         else:
             flash('Username does not exist.', category='error')
     return render_template("login.html", user=current_user)
@@ -77,17 +76,7 @@ def signup():
             message = "Select your gender"
             flash(message, category="error")
         else:
-            user = User(
-                username=username, 
-                email=email, 
-                fullname=fullname, 
-                gender=gender,
-                age=age, 
-                height=height, 
-                weight=weight, 
-                password=generate_password_hash(pwd1, method='sha256'),
-                join_date = func.now()
-                )
+            user = User(username, email, pwd1, fullname, gender, age, height, weight)
             db.session.add(user)
             db.session.commit()
             login_user(user, remember=True)

@@ -19,3 +19,7 @@ def login(client, username, password):
 
 def logout(client):
     return client.get('/logout', follow_redirects=True)
+
+from website.models import CalorieData
+def exercise_data(client, username, password):
+    login(client, username, password)

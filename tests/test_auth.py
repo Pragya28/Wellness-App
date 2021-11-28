@@ -1,5 +1,5 @@
 import pytest
-from .auth_functions import signup, login, logout
+from .test_functions import signup, login, logout
 
 def test_signup(client, app):
     resp = client.get("/sign-up")
