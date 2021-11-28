@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %} Calorie Counter {% endblock %} {%
 block heading %} Calorie Counter {% endblock %} {% block content %}
 
+<p>You burned {{total}} calories today. Here is the distribution.</p>
 <div class="calorie-table">
   <table
     class="table table-sm table-striped table-bordered"
@@ -12,7 +13,6 @@ block heading %} Calorie Counter {% endblock %} {% block content %}
         <th scope="col">Exercise</th>
         <th scope="col">Duration (in min)</th>
         <th scope="col">Calories Burned</th>
-        <th scope="col">Action</th>
       </tr>
     </thead>
     <tbody>

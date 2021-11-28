@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from datetime import date
 from .models import CalorieData
 from . import db
+from .calculations import calculate_calories
 
 views = Blueprint('views', __name__)
 
@@ -65,7 +66,8 @@ def calorie():
             flash("Your exercise is recorded.", category="success")
                 
     old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today()).all()
-    return render_template("calorie.html", user=current_user, data=old_data)
+    total = calculate_calories(old_data)
+    return render_template("calorie.html", user=current_user, data=old_data, total=total)
 
 @views.route('/sleep')
 @login_required
