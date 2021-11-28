@@ -1,2 +1,44 @@
-{% extends "base.html" %} {% block title %} Calorie Counter {% endblock %} {%
-block content %} {% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body{
+        background-image: url("calories.jpg");
+        background-repeat: no-repeat;
+        background-size: 1600px;
+    }
+    h1{
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-size: 90px;
+    }
+    p{
+        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-size: 40px;
+    }
+    div{
+        font-size: 40px;
+        
+    }
+    p1{
+        font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    }
+</style>
+<body>
+    <h1>Calories :-</h1>
+    <p>>A calorie is a measurement, just like a teaspoon or an inch.</p>
+    <p>>Calories are the amount of energy released when your body breaks down (digests and absorbs) food.</p>
+    <p>>The more calories a food has, the more energy it can provide to your body.</p>
+    <div>
+    <p1>**Input the amount of calories here**</p1>
+    <input type="text" name="myInput" height="60" width="" required>
+    <input type="date" name="myInput" value="2021-11-28">
+    <button type="button" name="myButton">Count the calories</button>
+    
+    </div>
+</body>
+</html>
