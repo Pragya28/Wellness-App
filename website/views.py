@@ -159,11 +159,32 @@ def activity():
         else:
             text = ""
             stars = 0
-        print(text, stars)
     return render_template("activity.html", user=current_user, text=text, stars=stars)
 
 @views.route('/learning', methods=["GET", "POST"])
 @login_required
 def learning():
-    return render_template("learning.html", user=current_user)
+    if request.method == "POST":
+        text = request.form.get("learning")
+        stars = int(request.form.get("star"))
+        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+        if data:
+            data.add_learning(text, stars)
+            db.session.commit()
+            flash(UPDATE_MSG, category="success")
+        else:
+            data = Data(current_user.id)
+            data.add_learning(text, stars)
+            db.session.add()
+            db.session.commit()
+            flash(SAVE_MSG, category="success")
+    else:
+        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+        if data:
+            text = data.learning
+            stars = data.learning_rating
+        else:
+            text = ""
+            stars = 0
+    return render_template("learning.html", user=current_user, text=text, stars=stars)
     

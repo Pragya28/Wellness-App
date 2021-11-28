@@ -11,12 +11,20 @@ content %}
           placeholder="Write about what new you learnt today here..."
           id="floatingTextarea"
           style="height: 250px"
-        ></textarea>
+          name="learning"
+        >
+      {% if text %} {{text}}  {% endif %}
+      </textarea
+        >
         <label for="floatingTextarea">What new you learnt today?</label>
       </div>
       <br />
       <div class="form-control text-center">
-        <label for="stars"> How will you rating your learning?</label><br />
+        <label for="stars">
+          {% if stars %} You rated today's learning {{stars}} stars. {% else %}
+          How will you rating your satisfaction?{% endif %}
+        </label>
+        <br />
         <div class="stars">
           <input
             class="star star-5"
@@ -60,6 +68,8 @@ content %}
           <label class="star star-1" for="star-1"></label>
         </div>
       </div>
+      <br />
+      <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
 </div>
