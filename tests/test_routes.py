@@ -48,36 +48,50 @@ def test_home(client, app):
     assert app.config['TEST_USERNAME'].encode() in resp.get_data()
         
 
-def test_profile(client):
+def test_profile(client, app):
     resp = client.get("/profile")
+    assert resp.status_code != 200
+    resp = login(client, app.config['TEST_USERNAME'], app.config['TEST_PASSWORD'])
     assert resp.status_code == 200
 
 
-def test_bmi(client):
+def test_bmi(client, app):
     resp = client.get("/bmi")
+    assert resp.status_code != 200
+    resp = login(client, app.config['TEST_USERNAME'], app.config['TEST_PASSWORD'])
     assert resp.status_code == 200
 
 
-def test_calorie(client):
+def test_calorie(client, app):
     resp = client.get("/calorie")
+    assert resp.status_code != 200
+    resp = login(client, app.config['TEST_USERNAME'], app.config['TEST_PASSWORD'])
     assert resp.status_code == 200
 
 
-def test_sleep(client):
+def test_sleep(client, app):
     resp = client.get("/sleep")
+    assert resp.status_code != 200
+    resp = login(client, app.config['TEST_USERNAME'], app.config['TEST_PASSWORD'])
     assert resp.status_code == 200
 
 
-def test_water(client):
+def test_water(client, app):
     resp = client.get("/water")
+    assert resp.status_code != 200
+    resp = login(client, app.config['TEST_USERNAME'], app.config['TEST_PASSWORD'])
     assert resp.status_code == 200
 
 
-def test_activity(client):
+def test_activity(client, app):
     resp = client.get("/activity")
+    assert resp.status_code != 200
+    resp = login(client, app.config['TEST_USERNAME'], app.config['TEST_PASSWORD'])
     assert resp.status_code == 200
 
 
-def test_learning(client):
+def test_learning(client, app):
     resp = client.get("/learning")
+    assert resp.status_code != 200
+    resp = login(client, app.config['TEST_USERNAME'], app.config['TEST_PASSWORD'])
     assert resp.status_code == 200

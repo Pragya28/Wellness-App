@@ -26,7 +26,7 @@ def create_app(test_config=None):
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-    from .models import User, Data
+    from .models import User, Data, CalorieData
     create_database(app, db_name)
 
     login_manager = LoginManager()

@@ -1,5 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
+from datetime import date
+from .models import CalorieData
+from . import db
 
 views = Blueprint('views', __name__)
 
@@ -43,10 +46,26 @@ def bmi():
     flash(message, category=category)
     return render_template("bmi.html", user=current_user)
 
-@views.route('/calorie')
+@views.route('/calorie', methods=["GET", "POST"])
 @login_required
 def calorie():
-    return render_template("calorie.html", user=current_user)
+    if request.method == "POST":
+        exercise = request.form.get("exercise")
+        duration = request.form.get("duration")
+        calories = request.form.get("calories")
+        
+        data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today(), exercise=exercise).first()
+
+        if data:
+            flash("You have already recorded data for this exercise today.", category="error")
+        else:
+            data = CalorieData(exercise, duration, calories)
+            db.session.add(data)
+            db.session.commit()
+            flash("Your exercise is recorded.", category="success")
+                
+    old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today()).all()
+    return render_template("calorie.html", user=current_user, data=old_data)
 
 @views.route('/sleep')
 @login_required

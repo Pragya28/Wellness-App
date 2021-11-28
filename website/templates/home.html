@@ -1,6 +1,5 @@
-{% extends "base.html" %} {% block title %} Home {% endblock %} {% block content
-%}
-<div class="display-6">Hi, {{ user.username }}</div>
+{% extends "base.html" %} {% block title %} Home {% endblock %} {% block heading
+%} Hi, {{ user.username }} {% endblock %} {% block content %}
 <div>You joined us on: {{ user.join_date }}</div>
 <div class="text-center">Your wellness index is {{ user.wellness }}</div>
 {% endblock %}
