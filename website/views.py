@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from datetime import date
-from .models import CalorieData
+from .models import CalorieData, Data
 from . import db
 from .calculations import calculate_calories
 
@@ -65,26 +65,56 @@ def calorie():
             db.session.commit()
             flash("Your exercise is recorded.", category="success")
                 
-    old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today()).all()
-    total = calculate_calories(old_data)
+        old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today()).all()
+        total = calculate_calories(old_data)
+
+        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+
+        if data:
+            data.add_calorie(total)
+            db.session.commit()
+        else:
+            data = Data(current_user.id)
+            data.add_calorie(total)
+            db.session.add()
+            db.session.commit()
+
     return render_template("calorie.html", user=current_user, data=old_data, total=total)
 
-@views.route('/sleep')
+@views.route('/sleep', methods=["GET", "POST"])
 @login_required
 def sleep():
-    return render_template("sleep.html", user=current_user)
+    if request.method == "POST":
+        hours = request.form.get("sleep")
+        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+        if data:
+            data.add_sleep(hours)
+            db.session.commit()
+        else:
+            data = Data(current_user.id)
+            data.add_sleep(hours)
+            db.session.add()
+            db.session.commit()
+        flash("Your data has been recorded", category="success")
+    else:
+        data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+        if data:
+            hours = data.sleep
+        else:
+            hours = 0
+    return render_template("sleep.html", user=current_user, hours=hours)
 
-@views.route('/water')
+@views.route('/water', methods=["GET", "POST"])
 @login_required
 def water():
     return render_template("water.html", user=current_user)
 
-@views.route('/activity')
+@views.route('/activity', methods=["GET", "POST"])
 @login_required
 def activity():
     return render_template("activity.html", user=current_user)
 
-@views.route('/learning')
+@views.route('/learning', methods=["GET", "POST"])
 @login_required
 def learning():
     return render_template("learning.html", user=current_user)

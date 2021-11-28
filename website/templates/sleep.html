@@ -30,10 +30,14 @@ block content %}
         </p>
       </li>
     </ul>
+    <br />
+    <div class="text-center">
+      {% if hours %} You slept {{hours}} hours today {% endif %}
+    </div>
     <form method="post">
       <div class="form-group mb-3 row">
         <div class="col-sm-2">
-          <label for="calories" class="col-form-label">
+          <label for="sleep" class="col-form-label">
             Hours you slept today
           </label>
         </div>

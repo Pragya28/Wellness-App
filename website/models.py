@@ -53,7 +53,7 @@ class Data(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     date = db.Column(db.Date)
     calorie = db.Column(db.Float, default=0.0)
-    sleep = db.Column(db.Float, default=0.0)
+    sleep = db.Column(db.Integer, default=0)
     water = db.Column(db.Float, default=0.0)
     activity = db.Column(db.String(1000))
     activity_rating = db.Column(db.Integer,  default=0)
