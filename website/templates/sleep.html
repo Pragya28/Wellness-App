@@ -1,2 +1,30 @@
 {% extends "base.html" %} {% block title %} Sleeping Hours {% endblock %} {%
-block heading %} Sleeping Hours{% endblock %}{% block content %} {% endblock %}
+block content %}
+<div class="box sleep-page">
+  <div class="container">
+    <div class="display-6">Sleeping Hours</div>
+    <br />
+    <p>
+      >A condition of body and mind that typically recurs for several hours
+      every night.
+    </p>
+    <p>
+      >Where in the nervous system is relatively inactive, the eyes closed, the
+      postural muscles relaxed, and consciousness practically suspended.
+    </p>
+    <p>
+      >Too much of sleep is also bad for health and is known to be a symptom of
+      depression
+    </p>
+    <p>
+      Sleeping very less is also bad for health known an insomnia eventually
+      leading to fatigue
+    </p>
+
+    <p1>**Input the number of hours slept**</p1>
+    <input type="text" name="myInput" height="60" width="" required />
+    <input type="date" name="myInput" value="2021-11-28" />
+    <button type="button" name="myButton">hours slept</button>
+  </div>
+</div>
+{% endblock %}

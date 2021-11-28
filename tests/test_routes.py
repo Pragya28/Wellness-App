@@ -2,7 +2,7 @@ import pytest
 from flask import Flask
 from flask_login import current_user
 from website import create_app
-from .auth_functions import login
+from .test_functions import login
 
 
 def test_config(app):

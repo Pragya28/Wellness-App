@@ -1,83 +1,111 @@
 {% extends "base.html" %} {% block title %} Calorie Counter {% endblock %} {%
-block heading %} Calorie Counter {% endblock %} {% block content %}
+block content %}
 
-<p>You burned {{total}} calories today. Here is the distribution.</p>
-<div class="calorie-table">
-  <table
-    class="table table-sm table-striped table-bordered"
-    aria-label="DailyCalorieTable"
-  >
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Exercise</th>
-        <th scope="col">Duration (in min)</th>
-        <th scope="col">Calories Burned</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for d in data %}
-      <tr>
-        <th scope="row">{{loop.index}}</th>
-        <td>{{d.exercise}}</td>
-        <td>{{d.duration}}</td>
-        <td>{{d.calorie}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="box calorie-page">
+  <div class="container">
+    <div class="display-6">Calorie Counter</div>
+    <br />
+    <ul>
+      <li>
+        <p>A calorie is a measurement, just like a teaspoon or an inch.</p>
+      </li>
+      <li>
+        <p>
+          Calories are the amount of energy released when your body breaks down
+          (digests and absorbs) food.
+        </p>
+      </li>
+      <li>
+        <p>
+          The more calories a food has, the more energy it can provide to your
+          body.
+        </p>
+      </li>
+    </ul>
+
+    <p class="text-center">
+      You burned {{total}} calories today. Here is the distribution.
+    </p>
+    <div class="calorie-table">
+      <table
+        class="table table-sm table-striped table-bordered"
+        aria-label="DailyCalorieTable"
+      >
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Exercise</th>
+            <th scope="col">Duration (in min)</th>
+            <th scope="col">Calories Burned</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in data %}
+          <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{d.exercise}}</td>
+            <td>{{d.duration}}</td>
+            <td>{{d.calorie}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="calorie-form">
+      <form method="post">
+        <div class="input-group mb-3">
+          <div class="col-sm-2">
+            <label for="exercise" class="col-label-text">Exercise</label>
+          </div>
+          <div class="col-sm-10">
+            <select name="exercise" id="exercise" class="form-select">
+              <option value="not_selected" selected>
+                Select an exercise you performed today
+              </option>
+              <option value="Walking">Walking</option>
+              <option value="Running">Running</option>
+              <option value="Swimming">Swimming</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group mb-3 row">
+          <div class="col-sm-2">
+            <label for="duration" class="col-form-label"> Duration </label>
+          </div>
+          <div class="col-sm-10">
+            <input
+              type="number"
+              name="duration"
+              id="duration"
+              class="form-control"
+              placeholder="Enter Duration of the exercise (in mins)"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group mb-3 row">
+          <div class="col-sm-2">
+            <label for="calories" class="col-form-label">
+              Calories Burned
+            </label>
+          </div>
+          <div class="col-sm-10">
+            <input
+              type="number"
+              name="calories"
+              id="calories"
+              class="form-control"
+              placeholder="Enter Calories Burned"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" value="add">Add</button>
+      </form>
+    </div>
+
+    {% endblock %}
+  </div>
 </div>
-
-<div class="calorie-form">
-  <form method="post">
-    <div class="input-group mb-3">
-      <div class="col-sm-2">
-        <label for="exercise" class="col-label-text">Exercise</label>
-      </div>
-      <div class="col-sm-10">
-        <select name="exercise" id="exercise" class="form-select">
-          <option value="not_selected" selected>
-            Select an exercise you performed today
-          </option>
-          <option value="Walking">Walking</option>
-          <option value="Running">Running</option>
-          <option value="Swimming">Swimming</option>
-          <option value="Other">Other</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group mb-3 row">
-      <div class="col-sm-2">
-        <label for="duration" class="col-form-label"> Duration </label>
-      </div>
-      <div class="col-sm-10">
-        <input
-          type="number"
-          name="duration"
-          id="duration"
-          class="form-control"
-          placeholder="Enter Duration of the exercise (in mins)"
-          required
-        />
-      </div>
-    </div>
-    <div class="form-group mb-3 row">
-      <div class="col-sm-2">
-        <label for="calories" class="col-form-label"> Calories Burned </label>
-      </div>
-      <div class="col-sm-10">
-        <input
-          type="number"
-          name="calories"
-          id="calories"
-          class="form-control"
-          placeholder="Enter Calories Burned"
-          required
-        />
-      </div>
-    </div>
-    <button type="submit" class="btn btn-primary" value="add">Add</button>
-  </form>
-</div>
-
-{% endblock %}

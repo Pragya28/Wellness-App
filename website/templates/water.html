@@ -1,2 +1,31 @@
 {% extends "base.html" %} {% block title %} Water Intake {% endblock %} {% block
-heading %} Water Intake {% endblock %}{% block content %} {% endblock %}
+content %}
+<div class="box water-page">
+  <div class="container">
+    <div class="display-6">Water Intake</div>
+    <br />
+    <p>
+      >water, a substance composed of the chemical elements hydrogen and oxygen.
+    </p>
+    <p>
+      >Water travels throughout your body carrying nutrients, oxygen, and wastes
+      to and from your cells and organs.
+    </p>
+    <p>
+      >Water keeps your body cool as part of your body's temperature regulating
+      system.
+    </p>
+    <p>
+      Water cushions your joints, and protects your tissues and organs from
+      shock and damage.
+    </p>
+    <div>
+      <p1>**Input the number of glasses drank**</p1>
+      <input type="text" name="myInput" height="60" width="" required />
+      <input type="date" name="myInput" value="2021-11-28" />
+      <button type="button" name="myButton">Glasses consumed</button>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
