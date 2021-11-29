@@ -140,8 +140,12 @@ def water():
 @login_required
 def activity():
     if request.method == "POST":
-        text = request.form.get("activity")
-        stars = int(request.form.get("star"))
+        text = request.form.get("activity").strip()
+        stars = request.form.get("star")
+        if stars:
+            stars = int(stars)
+        else:
+            stars = 0
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
             data.add_activity(text, stars)
@@ -167,8 +171,12 @@ def activity():
 @login_required
 def learning():
     if request.method == "POST":
-        text = request.form.get("learning")
-        stars = int(request.form.get("star"))
+        text = request.form.get("learning").strip()
+        stars = request.form.get("star")
+        if stars:
+            stars = int(stars)
+        else:
+            stars = 0
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
             data.add_learning(text, stars)
