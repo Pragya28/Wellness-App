@@ -35,6 +35,7 @@ block content %}
       {% if hours %} You slept {{hours}} hours today {% endif %}
     </div>
     <form method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
       <div class="form-group mb-3 row">
         <div class="col-sm-2">
           <label for="sleep" class="col-form-label">
