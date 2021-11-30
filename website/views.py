@@ -115,8 +115,7 @@ def sleep():
 @login_required
 def water():
     if request.method == "POST":
-        glass = request.form.get("water")
-        amt = calculate_water(glass)
+        amt = int(request.form.get("water"))/1000
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
             data.add_water(amt)
@@ -125,7 +124,7 @@ def water():
         else:
             data = Data(current_user.id)
             data.add_water(amt)
-            db.session.add()
+            db.session.add(data)
             db.session.commit()
             flash(SAVE_MSG, category="success")
     else:
