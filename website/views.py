@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from datetime import date
 from .models import CalorieData, Data
 from . import db
-from .calculations import calculate_calories, calculate_water
+from .calculations import calculate_calories, calculate_sleeping_time
 
 views = Blueprint('views', __name__)
 
@@ -91,25 +91,33 @@ def calorie():
 @login_required
 def sleep():
     if request.method == "POST":
-        hours = request.form.get("sleep")
+        sleep_time = request.form.get("sleep-time")
+        wakeup_time = request.form.get("wakeup-time")
+        duration = calculate_sleeping_time(sleep_time, wakeup_time)
+        hrs = duration['hrs']
+        mins = duration['mins']
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
-            data.add_sleep(hours)
+            data.add_sleep(duration['total'])
             db.session.commit()
             flash(UPDATE_MSG, category="success")
         else:
             data = Data(current_user.id)
-            data.add_sleep(hours)
+            data.add_sleep(duration['total'])
             db.session.add()
             db.session.commit()
             flash(SAVE_MSG, category="success")
     else:
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
-            hours = data.sleep
+            duration = data.sleep
+            hrs = duration//60
+            mins = duration%60
         else:
-            hours = 0
-    return render_template("sleep.html", user=current_user, hours=hours)
+            hrs = 0
+            mins = 0
+            
+    return render_template("sleep.html", user=current_user, hours=hrs, mins=mins)
 
 @views.route('/water', methods=["GET", "POST"])
 @login_required
