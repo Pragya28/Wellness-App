@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from datetime import date
 from .models import CalorieData, Data
 from . import db
-from .calculations import calculate_calories, calculate_sleeping_time
+from .calculations import calculate_sleeping_time, calculate_calories_burned, total_calories
 
 views = Blueprint('views', __name__)
 
@@ -54,37 +54,21 @@ def bmi():
 @views.route('/calorie', methods=["GET", "POST"])
 @login_required
 def calorie():
+    old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today())
+    total = total_calories(old_data)
     if request.method == "POST":
-        exercise = request.form.get("exercise")
-        duration = request.form.get("duration")
-        calories = request.form.get("calories")
-        
-        data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today(), exercise=exercise).first()
-
-        if data:
-            flash("You have already recorded data for this exercise today.", category="error")
+        task = request.form.get("met-option")
+        duration = int(request.form.get("duration"))
+        if task in "":
+            flash("Select activity - if desired activity is not available select the one which seems nearest", "error")
         else:
-            data = CalorieData(exercise, duration, calories)
+            met_val = float(task.split("-")[-1])
+            cal = calculate_calories_burned(met_val, current_user.bmr, duration)
+            task = task.replace("_"," ")[:task.index("-")]
+            data = CalorieData(task, duration, cal)
             db.session.add(data)
             db.session.commit()
-            flash("Your exercise is recorded.", category="success")
-                
-    old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today()).all()
-    total = calculate_calories(old_data)
-
-    data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
-
-    if data:
-        data.add_calorie(total)
-        db.session.commit()
-        flash(UPDATE_MSG, category="success")
-    else:
-        data = Data(current_user.id)
-        data.add_calorie(total)
-        db.session.add(data)
-        db.session.commit()
-        flash(SAVE_MSG, category="success")
-
+        
     return render_template("calorie.html", user=current_user, data=old_data, total=total)
 
 @views.route('/sleep', methods=["GET", "POST"])

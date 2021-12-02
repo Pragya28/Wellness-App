@@ -12,9 +12,13 @@ def calculate_bmr(height, weight, age, gender):
     return bmr
  
 
-def calculate_calories(cal_data):
-    cal = [x.calorie for x in cal_data]
-    return sum(cal)
+def calculate_calories_burned(met, bmr, time):
+    cal = met * time * bmr/24 
+    return round(cal)
+
+
+def total_calories(data):
+    return sum([x.calorie for x in data])
 
 
 def calculate_sleeping_time(sleep_time, wakeup_time):

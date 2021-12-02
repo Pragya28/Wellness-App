@@ -23,7 +23,7 @@ block content %}
       </li>
     </ul>
 
-    <!-- <p class="text-center">
+    <p class="text-center">
       You burned {{total}} calories today. Here is the distribution.
     </p>
     <div class="calorie-table">
@@ -34,7 +34,7 @@ block content %}
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Exercise</th>
+            <th scope="col">Exercise / Activity</th>
             <th scope="col">Duration (in min)</th>
             <th scope="col">Calories Burned</th>
           </tr>
@@ -50,11 +50,40 @@ block content %}
           {% endfor %}
         </tbody>
       </table>
-    </div> -->
+    </div>
 
     <div class="calorie-form">
       <form method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="form-group mb-3 row">
+          <div class="col-sm-2">
+            <label for="met-category" class="col-form-label">
+              Activity Category
+            </label>
+          </div>
+          <div class="col-sm-5">
+            <select
+              name="met-class"
+              id="met-class"
+              class="form-select"
+              onchange="populate(this.id, 'met-option')"
+              required
+            >
+              <option>Select type of work</option>
+              <option value="light">Light</option>
+              <option value="moderate">Moderate</option>
+              <option value="vigorous">Vigorous</option>
+            </select>
+          </div>
+          <div class="col-sm-5">
+            <select
+              name="met-option"
+              id="met-option"
+              class="form-select"
+              required
+            ></select>
+          </div>
+        </div>
         <div class="form-group mb-3 row">
           <div class="col-sm-2">
             <label for="duration" class="col-form-label"> Duration </label>
@@ -66,23 +95,6 @@ block content %}
               id="duration"
               class="form-control"
               placeholder="Enter Duration of the exercise (in mins)"
-              required
-            />
-          </div>
-        </div>
-        <div class="form-group mb-3 row">
-          <div class="col-sm-2">
-            <label for="calories" class="col-form-label">
-              Calories Burned
-            </label>
-          </div>
-          <div class="col-sm-10">
-            <input
-              type="number"
-              name="calories"
-              id="calories"
-              class="form-control"
-              placeholder="Enter Calories Burned"
               required
             />
           </div>
