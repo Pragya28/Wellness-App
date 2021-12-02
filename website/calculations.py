@@ -18,7 +18,7 @@ def calculate_calories_burned(met, bmr, time):
 
 
 def total_calories(data):
-    return sum([x.calorie for x in data])
+    return sum([x.calories for x in data])
 
 
 def calculate_sleeping_time(sleep_time, wakeup_time):

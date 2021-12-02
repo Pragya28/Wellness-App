@@ -33,7 +33,7 @@ function populate(sec1, sec2) {
   } else if (s1.value == "vigorous") {
     opts = [
       "|",
-      "jogging_running-6|Jogging/running (6)",
+      "jogging_or_running-6|Jogging/running (6)",
       "basketball-8|Basketball (8)",
       "soccer-8.5|Soccer (8.5)",
       "bicycling-8|Bicycling-moderate/high (8)",

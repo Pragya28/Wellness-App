@@ -1,15 +1,13 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_required, current_user
 from datetime import date
-from .models import CalorieData, Data
+from .models import CalorieData, FoodData, Data
 from . import db
 from .calculations import calculate_sleeping_time, calculate_calories_burned, total_calories
 
 views = Blueprint('views', __name__)
 
 SAVE_MSG = "Your data has been recorded"
-UPDATE_MSG = "Your data has been updated"
-
 
 @views.route('/', methods=['GET', 'POST'])
 def start():
@@ -54,8 +52,6 @@ def bmi():
 @views.route('/calorie', methods=["GET", "POST"])
 @login_required
 def calorie():
-    old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today())
-    total = total_calories(old_data)
     if request.method == "POST":
         task = request.form.get("met-option")
         duration = int(request.form.get("duration"))
@@ -70,6 +66,13 @@ def calorie():
             db.session.commit()
             flash(SAVE_MSG, category="success")
         
+    old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today())
+    total = total_calories(old_data)
+    data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+    if data and data.calorie != total:
+            data.add_calorie(total)
+            db.session.commit()
+            flash(SAVE_MSG, category="success")    
     return render_template("calorie.html", user=current_user, data=old_data, total=total)
 
 @views.route('/sleep', methods=["GET", "POST"])
@@ -85,13 +88,12 @@ def sleep():
         if data:
             data.add_sleep(duration['total'])
             db.session.commit()
-            flash(UPDATE_MSG, category="success")
         else:
             data = Data(current_user.id)
             data.add_sleep(duration['total'])
             db.session.add(data)
             db.session.commit()
-            flash(SAVE_MSG, category="success")
+        flash(SAVE_MSG, category="success")
     else:
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
@@ -100,8 +102,7 @@ def sleep():
             mins = duration%60
         else:
             hrs = 0
-            mins = 0
-            
+            mins = 0            
     return render_template("sleep.html", user=current_user, hours=hrs, mins=mins)
 
 @views.route('/water', methods=["GET", "POST"])
@@ -113,13 +114,12 @@ def water():
         if data:
             data.add_water(amt)
             db.session.commit()
-            flash(UPDATE_MSG, category="success")
         else:
             data = Data(current_user.id)
             data.add_water(amt)
             db.session.add(data)
             db.session.commit()
-            flash(SAVE_MSG, category="success")
+        flash(SAVE_MSG, category="success")
     else:
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
@@ -132,7 +132,73 @@ def water():
 @views.route('/nutrition', methods=["GET", "POST"])
 @login_required
 def nutrition():
-    return render_template("nutrition.html", user=current_user)
+    if request.method == "POST":
+        food = request.form.get("food")
+
+        if food:
+            # Source: https://esha.com/products/nutrition-database-api/
+            # API details: https://nutrition-api-dev.esha.com/
+            import http.client, urllib.request
+            import os, json
+            
+            KCAL = "urn:uuid:a4d01e46-5df2-4cb3-ad2c-6b438e79e5b9"
+
+            headers = {
+                # Request headers
+                'Accept': 'application/json',
+                'Ocp-Apim-Subscription-Key': os.environ.get("NUTRITION_API"),
+            }
+
+
+            try:
+                params = urllib.parse.urlencode({
+                    # Request parameters
+                    'query': f'{food}',
+                    'start': '0',
+                    'count': '1',
+                    'spell': 'true',
+                })
+
+                conn = http.client.HTTPSConnection('nutrition-api.esha.com')
+                conn.request("GET", "/foods?%s" % params, "{body}", headers)
+                response = conn.getresponse()
+                data = response.read()
+                json_str = data.decode("utf-8")
+                json_data = json.loads(json.dumps(json.loads(json_str)))
+                uri = json_data["items"][0]["id"]
+                conn.close()
+            
+                params = urllib.parse.urlencode({
+                })
+
+                conn = http.client.HTTPSConnection('nutrition-api.esha.com')
+                conn.request("GET", f"/food/{uri}?%s" % params, "{body}", headers)
+                response = conn.getresponse()
+                data = response.read()
+                json_str = data.decode("utf-8")
+                json_data = json.loads(json.dumps(json.loads(json_str)))
+                for info in json_data['nutrient_data']:
+                    if info['nutrient'] == KCAL:
+                        val = info['value']
+                conn.close()
+
+                data = FoodData(food, val)
+                db.session.add(data)
+                db.session.commit()
+                flash(SAVE_MSG, category="success")
+
+            except Exception as e:
+                print("[Errno {0}] {1}".format(e.errno, e.strerror))
+                flash("Item not found", "error")
+    
+    old_data = FoodData.query.filter_by(user_id=current_user.id, date=date.today())
+    total = total_calories(old_data)
+    data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+    if data and data.nutrition != total:
+            data.add_nutrition(total)
+            db.session.commit()
+            flash(SAVE_MSG, category="success")                
+    return render_template("nutrition.html", user=current_user, data=old_data, total=total)
 
 
 @views.route('/activity', methods=["GET", "POST"])
@@ -149,13 +215,12 @@ def activity():
         if data:
             data.add_activity(text, stars)
             db.session.commit()
-            flash(UPDATE_MSG, category="success")
         else:
             data = Data(current_user.id)
             data.add_activity(text, stars)
             db.session.add(data)
             db.session.commit()
-            flash(SAVE_MSG, category="success")
+        flash(SAVE_MSG, category="success")
     else:
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
@@ -180,13 +245,12 @@ def learning():
         if data:
             data.add_learning(text, stars)
             db.session.commit()
-            flash(UPDATE_MSG, category="success")
         else:
             data = Data(current_user.id)
             data.add_learning(text, stars)
             db.session.add(data)
             db.session.commit()
-            flash(SAVE_MSG, category="success")
+        flash(SAVE_MSG, category="success")
     else:
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:

@@ -42,27 +42,43 @@ class CalorieData(db.Model):
     date = db.Column(db.Date)
     exercise = db.Column(db.String(20))
     duration = db.Column(db.Integer)
-    calorie = db.Column(db.Integer)
+    calories = db.Column(db.Integer)
 
-    def __init__(self, exercise, duration, calorie):
+    def __init__(self, exercise, duration, calories):
         self.user_id = current_user.id
         self.date = date.today()
         self.exercise = exercise
         self.duration = duration
-        self.calorie = calorie
+        self.calories = calories
 
+class FoodData(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    date = db.Column(db.Date)
+    fooditem = db.Column(db.String(20))
+    calories = db.Column(db.Integer)
+
+    def __init__(self, fooditem, calories):
+        self.user_id = current_user.id
+        self.date = date.today()
+        self.fooditem = fooditem
+        self.calories = calories
+        
+    
 
 class Data(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     date = db.Column(db.Date)
-    calorie = db.Column(db.Float, default=0.0)
+    calorie = db.Column(db.Integer, default=0)
     sleep = db.Column(db.Integer, default=0)
     water = db.Column(db.Float, default=0.0)
+    nutrition = db.Column(db.Integer, default=0)
     activity = db.Column(db.String(1000))
     activity_rating = db.Column(db.Integer,  default=0)
     learning = db.Column(db.String(1000))
     learning_rating = db.Column(db.Integer,  default=0)
+    wellness = db.Column(db.Float, default="user.wellness")
 
     def __init__(self, user_id):
         self.user_id = user_id
@@ -76,6 +92,9 @@ class Data(db.Model):
 
     def add_water(self, water):
         self.water = water
+
+    def add_nutrition(self, nutrition):
+        self.nutrition = nutrition
 
     def add_activity(self, activity, activity_rating):
         self.activity = activity

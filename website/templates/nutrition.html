@@ -5,34 +5,70 @@ block content %}
   <div class="container">
     <div class="display-6">Nutrition</div>
     <br />
-    <h1>Nutrition</h1>
-    <p>The process of providing or obtaining the food necessary for health and growth.</p>
-    <p>The branch of science that deals with nutrients and nutrition, particularly in humans.</p>
-    <h2>What have you eaten?</h2>
-    <input type="search" name="myInput" placeholder="Search" size="30" required>
-    <button type="button" name="myButton">Calculate!</button>
-    <form action="/action_page.php">
-      <label for="cars">Choose the food:</label>
-      <select name="cars" id="cars">
-        <option value="Nuts">Nuts 80 Cal</option>
-        <option value="Sandwich">Sandwich 150 Cal</option>
-        <option value="Milk">Milk 60 Cal</option>
-        <option value="cereal">cereal 120 Cal</option>
-        <option value="Idly">Idly 100 Cal</option>
-        <option value="Dosa">Dosa 150 Cal</option>
-        <option value="Eggs">Eggs 80 Cal</option>
-        <option value="Chicken">Chicken 175 Cal</option>
-        <option value="Beef">Beef 210 Cal</option>
-        <option value="Burger">Burger 350 Cal</option>
-        <option value="Pizza">Pizza 300 Cal</option>
-        <option value="Taco">Taco 195 Cal</option>
-        <option value="Smoothie">Smoothie 120 Cal</option>
-        <option value="Coke">Coke 250 Cal</option>
-        <option value="Coffee">Coffee 10 Cal</option>
-        <option value="Tea">Tea 10 Cal</option>
+    <ul>
+      <li>
+        <p>
+          The process of providing or obtaining the food necessary for health
+          and growth.
+        </p>
+      </li>
+      <li>
+        <p>
+          The branch of science that deals with nutrients and nutrition,
+          particularly in humans.
+        </p>
+      </li>
+    </ul>
 
-      </select>
-      <br><br>
+    <div class="form-group">
+      <form method="post">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+        <div class="form-group mb-3 row">
+          <div class="col-sm-2">
+            <label for="food" class="col-form-label"> Search food </label>
+          </div>
+          <div class="col-sm-8">
+            <input
+              type="search"
+              name="food"
+              id="food"
+              class="form-control"
+              placeholder="search"
+              required
+            />
+          </div>
+          <div class="col-sm-2">
+            <button type="submit" class="btn btn-primary">Search</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p class="text-center">
+      You consumed {{total}} kcal today. Here is the distribution.
+    </p>
+    <div class="food-table">
+      <table
+        class="table table-sm table-striped table-bordered"
+        aria-label="DailyFoodTable"
+      >
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Food</th>
+            <th scope="col">Calories</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for d in data %}
+          <tr>
+            <th scope="row">{{loop.index}}</th>
+            <td>{{d.fooditem}}</td>
+            <td>{{d.calories}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
