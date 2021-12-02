@@ -81,7 +81,7 @@ def calorie():
     else:
         data = Data(current_user.id)
         data.add_calorie(total)
-        db.session.add()
+        db.session.add(data)
         db.session.commit()
         flash(SAVE_MSG, category="success")
 
@@ -104,7 +104,7 @@ def sleep():
         else:
             data = Data(current_user.id)
             data.add_sleep(duration['total'])
-            db.session.add()
+            db.session.add(data)
             db.session.commit()
             flash(SAVE_MSG, category="success")
     else:

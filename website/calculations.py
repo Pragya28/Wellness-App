@@ -1,11 +1,22 @@
 def calculate_bmi(height, weight):
-    return weight/(height ** 2) * 10000
+    bmi = weight/(height ** 2) * 10000
+    return round(bmi, 2)
+
+
+# Formula source: http://www.shapesense.com/fitness-exercise/calculators/activity-based-calorie-burn-calculator.aspx
+def calculate_bmr(height, weight, age, gender):
+    if gender == "male":
+        bmr = 13.75 * weight + 5 * height - 6.76 * age + 66
+    else:
+        bmr = 9.56 * weight + 1.85 * height - 4.68 * age + 655
+    return bmr
+ 
 
 def calculate_calories(cal_data):
     cal = [x.calorie for x in cal_data]
     return sum(cal)
 
-from datetime import datetime
+
 def calculate_sleeping_time(sleep_time, wakeup_time):
     sleep_time = list(map(int, sleep_time.split(":")))
     wakeup_time = list((map(int, wakeup_time.split(":"))))

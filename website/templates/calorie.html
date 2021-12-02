@@ -55,22 +55,6 @@ block content %}
     <div class="calorie-form">
       <form method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-        <div class="input-group mb-3">
-          <div class="col-sm-2">
-            <label for="exercise" class="col-label-text">Activity Level</label>
-          </div>
-          <div class="col-sm-10">
-            <select name="exercise" id="exercise" class="form-select">
-              <option value="not_selected" selected>
-                Select your activity level
-              </option>
-              <option value="Walking">Walking</option>
-              <option value="Running">Running</option>
-              <option value="Swimming">Swimming</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-        </div>
         <div class="form-group mb-3 row">
           <div class="col-sm-2">
             <label for="duration" class="col-form-label"> Duration </label>
