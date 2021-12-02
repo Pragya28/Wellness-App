@@ -23,7 +23,7 @@ block content %}
       </li>
     </ul>
 
-    <p class="text-center">
+    <!-- <p class="text-center">
       You burned {{total}} calories today. Here is the distribution.
     </p>
     <div class="calorie-table">
@@ -50,19 +50,19 @@ block content %}
           {% endfor %}
         </tbody>
       </table>
-    </div>
+    </div> -->
 
     <div class="calorie-form">
       <form method="post">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <div class="input-group mb-3">
           <div class="col-sm-2">
-            <label for="exercise" class="col-label-text">Exercise</label>
+            <label for="exercise" class="col-label-text">Activity Level</label>
           </div>
           <div class="col-sm-10">
             <select name="exercise" id="exercise" class="form-select">
               <option value="not_selected" selected>
-                Select an exercise you performed today
+                Select your activity level
               </option>
               <option value="Walking">Walking</option>
               <option value="Running">Running</option>
