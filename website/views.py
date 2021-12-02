@@ -68,6 +68,7 @@ def calorie():
             data = CalorieData(task, duration, cal)
             db.session.add(data)
             db.session.commit()
+            flash(SAVE_MSG, category="success")
         
     return render_template("calorie.html", user=current_user, data=old_data, total=total)
 
@@ -127,12 +128,23 @@ def water():
             amt = 0
     return render_template("water.html", user=current_user, amt=amt)
 
+
+@views.route('/nutrition', methods=["GET", "POST"])
+@login_required
+def nutrition():
+    return render_template("nutrition.html", user=current_user)
+
+
 @views.route('/activity', methods=["GET", "POST"])
 @login_required
 def activity():
     if request.method == "POST":
-        text = request.form.get("activity")
-        stars = int(request.form.get("star"))
+        text = request.form.get("activity").strip()
+        stars = request.form.get("star")
+        if stars:
+            stars = int(stars)
+        else:
+            stars = 0
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
             data.add_activity(text, stars)
@@ -141,7 +153,7 @@ def activity():
         else:
             data = Data(current_user.id)
             data.add_activity(text, stars)
-            db.session.add()
+            db.session.add(data)
             db.session.commit()
             flash(SAVE_MSG, category="success")
     else:
@@ -158,8 +170,12 @@ def activity():
 @login_required
 def learning():
     if request.method == "POST":
-        text = request.form.get("learning")
-        stars = int(request.form.get("star"))
+        text = request.form.get("learning").strip()
+        stars = request.form.get("star")
+        if stars:
+            stars = int(stars)
+        else:
+            stars = 0
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
             data.add_learning(text, stars)
@@ -168,7 +184,7 @@ def learning():
         else:
             data = Data(current_user.id)
             data.add_learning(text, stars)
-            db.session.add()
+            db.session.add(data)
             db.session.commit()
             flash(SAVE_MSG, category="success")
     else:
