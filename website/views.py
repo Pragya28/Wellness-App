@@ -136,6 +136,13 @@ def water():
             amt = 0
     return render_template("water.html", user=current_user, amt=amt)
 
+
+@views.route('/nutrition', methods=["GET", "POST"])
+@login_required
+def nutrition():
+    return render_template("nutrition.html", user=current_user)
+
+
 @views.route('/activity', methods=["GET", "POST"])
 @login_required
 def activity():
