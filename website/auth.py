@@ -27,6 +27,7 @@ def login():
             flash('Username does not exist.', category='error')
     return render_template("login.html", user=current_user)
 
+
 @auth.route('/logout')
 @login_required
 def logout():
@@ -59,6 +60,9 @@ def signup():
         elif userbyemail:
             message = "This email already has an account"
             flash(message, category="error")
+        elif "." not in email.split("@")[-1]:
+            message = "Invalid email address"
+            flash(message, category="error")
         elif pwd1 != pwd2:
             message = "Unmatched passwords"
             flash(message, category="error")
@@ -84,7 +88,6 @@ def signup():
             login_user(user, remember=True)
             message = "Account created"
             flash(message, category="success")
-            return redirect(url_for('views.home'))
-        
+            return redirect(url_for('views.home'))        
         
     return render_template('signup.html', user=current_user)
