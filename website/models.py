@@ -126,11 +126,14 @@ class Data(db.Model):
             "very-active" : 1.9
             }
 
-        net_cal = current_user.bmr*LIFESTYLES[current_user.lifestyle]
-        act_cal = net_cal-current_user.bmr
+        if current_user:
+            net_cal = current_user.bmr*LIFESTYLES[current_user.lifestyle]
+        else:
+            net_cal = 0
+        # act_cal = net_cal-current_user.bmr
 
         # print(net_cal, act_cal)
-        
+        print(net_cal, self.calorie, self.nutrition)
         cal_score = abs(net_cal+self.calorie-self.nutrition)/current_user.bmr * 40
         # print(cal_score)
 

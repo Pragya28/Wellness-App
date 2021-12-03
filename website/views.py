@@ -28,7 +28,6 @@ def home():
         data.calculate_wellness()
     else:
         data = Data(current_user.id)
-        data.calculate_wellness()
         db.session.add(data)
     db.session.commit()
 
@@ -75,7 +74,7 @@ def calorie():
             db.session.commit()
             flash(SAVE_MSG, category="success")
         
-    old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today())
+    old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today()).first()
     total = total_calories(old_data)
     data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
     if data and data.calorie != total:
@@ -85,7 +84,6 @@ def calorie():
     else:
         data = Data(current_user.id)
         data.add_calorie(total)
-        data.calculate_wellness()
         db.session.add(data)
         db.session.commit()
     flash(SAVE_MSG, category="success")    
@@ -108,7 +106,6 @@ def sleep():
         else:
             data = Data(current_user.id)
             data.add_sleep(duration['total'])
-            data.calculate_wellness()
             db.session.add(data)
             db.session.commit()
         flash(SAVE_MSG, category="success")
@@ -136,7 +133,6 @@ def water():
         else:
             data = Data(current_user.id)
             data.add_water(amt)
-            data.calculate_wellness()
             db.session.add(data)
             db.session.commit()
         flash(SAVE_MSG, category="success")
@@ -217,7 +213,6 @@ def nutrition():
     else:
         data = Data(current_user.id)
         data.add_nutrition(total)
-        data.calculate_wellness()
         db.session.add(data)
     db.session.commit()
     flash(SAVE_MSG, category="success")                
@@ -241,7 +236,6 @@ def activity():
         else:
             data = Data(current_user.id)
             data.add_activity(text, stars)
-            data.calculate_wellness()
             db.session.add(data)
             db.session.commit()
         flash(SAVE_MSG, category="success")
@@ -273,7 +267,6 @@ def learning():
         else:
             data = Data(current_user.id)
             data.add_learning(text, stars)
-            data.calculate_wellness()
             db.session.add(data)
             db.session.commit()
         flash(SAVE_MSG, category="success")
