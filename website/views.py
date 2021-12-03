@@ -23,6 +23,15 @@ def start():
 @views.route('/home')
 @login_required
 def home():
+    data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
+    if data:
+        data.calculate_wellness()
+    else:
+        data = Data(current_user.id)
+        data.calculate_wellness()
+        db.session.add(data)
+    db.session.commit()
+
     return render_template("home.html", user=current_user)
 
 @views.route('/profile')
@@ -70,9 +79,16 @@ def calorie():
     total = total_calories(old_data)
     data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
     if data and data.calorie != total:
-            data.add_calorie(total)
-            db.session.commit()
-            flash(SAVE_MSG, category="success")    
+        data.add_calorie(total)
+        data.calculate_wellness()
+        db.session.commit()
+    else:
+        data = Data(current_user.id)
+        data.add_calorie(total)
+        data.calculate_wellness()
+        db.session.add(data)
+        db.session.commit()
+    flash(SAVE_MSG, category="success")    
     return render_template("calorie.html", user=current_user, data=old_data, total=total)
 
 @views.route('/sleep', methods=["GET", "POST"])
@@ -87,10 +103,12 @@ def sleep():
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
             data.add_sleep(duration['total'])
+            data.calculate_wellness()
             db.session.commit()
         else:
             data = Data(current_user.id)
             data.add_sleep(duration['total'])
+            data.calculate_wellness()
             db.session.add(data)
             db.session.commit()
         flash(SAVE_MSG, category="success")
@@ -113,10 +131,12 @@ def water():
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
             data.add_water(amt)
+            data.calculate_wellness()
             db.session.commit()
         else:
             data = Data(current_user.id)
             data.add_water(amt)
+            data.calculate_wellness()
             db.session.add(data)
             db.session.commit()
         flash(SAVE_MSG, category="success")
@@ -149,7 +169,6 @@ def nutrition():
                 'Ocp-Apim-Subscription-Key': os.environ.get("NUTRITION_API"),
             }
 
-
             try:
                 params = urllib.parse.urlencode({
                     # Request parameters
@@ -166,12 +185,10 @@ def nutrition():
                 json_str = data.decode("utf-8")
                 json_data = json.loads(json.dumps(json.loads(json_str)))
                 uri = json_data["items"][0]["id"]
-                conn.close()
             
                 params = urllib.parse.urlencode({
                 })
 
-                conn = http.client.HTTPSConnection('nutrition-api.esha.com')
                 conn.request("GET", f"/food/{uri}?%s" % params, "{body}", headers)
                 response = conn.getresponse()
                 data = response.read()
@@ -195,9 +212,15 @@ def nutrition():
     total = total_calories(old_data)
     data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
     if data and data.nutrition != total:
-            data.add_nutrition(total)
-            db.session.commit()
-            flash(SAVE_MSG, category="success")                
+        data.add_nutrition(total)
+        data.calculate_wellness()
+    else:
+        data = Data(current_user.id)
+        data.add_nutrition(total)
+        data.calculate_wellness()
+        db.session.add(data)
+    db.session.commit()
+    flash(SAVE_MSG, category="success")                
     return render_template("nutrition.html", user=current_user, data=old_data, total=total)
 
 
@@ -218,6 +241,7 @@ def activity():
         else:
             data = Data(current_user.id)
             data.add_activity(text, stars)
+            data.calculate_wellness()
             db.session.add(data)
             db.session.commit()
         flash(SAVE_MSG, category="success")
@@ -244,10 +268,12 @@ def learning():
         data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
         if data:
             data.add_learning(text, stars)
+            data.calculate_wellness()
             db.session.commit()
         else:
             data = Data(current_user.id)
             data.add_learning(text, stars)
+            data.calculate_wellness()
             db.session.add(data)
             db.session.commit()
         flash(SAVE_MSG, category="success")

@@ -37,3 +37,16 @@ def calculate_sleeping_time(sleep_time, wakeup_time):
         'total' : hrs*60+mins
     }
 
+def word_count_score(text):
+    if text is None:
+        return 0
+    n = len(text)
+    if n < 20:
+        return 1
+    if n < 40:
+        return 2
+    if n < 60:
+        return 3
+    if n < 80:
+        return 4
+    return 5

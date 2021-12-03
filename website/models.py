@@ -2,7 +2,7 @@ from . import db
 from flask_login import UserMixin
 from datetime import date
 from werkzeug.security import generate_password_hash, check_password_hash
-from .calculations import calculate_bmi, calculate_bmr
+from .calculations import calculate_bmi, calculate_bmr, word_count_score
 from flask_login import current_user
 
 class User(db.Model, UserMixin):
@@ -78,11 +78,12 @@ class Data(db.Model):
     activity_rating = db.Column(db.Integer,  default=0)
     learning = db.Column(db.String(1000))
     learning_rating = db.Column(db.Integer,  default=0)
-    wellness = db.Column(db.Float, default="user.wellness")
+    wellness = db.Column(db.Float, default=0.0)
 
     def __init__(self, user_id):
         self.user_id = user_id
         self.date = date.today()
+        self.wellness = current_user.wellness
 
     def add_calorie(self, calorie):
         self.calorie = calorie
@@ -103,3 +104,52 @@ class Data(db.Model):
     def add_learning(self, learning, learning_rating):
         self.learning = learning
         self.learning_rating = learning_rating
+
+    def calculate_wellness(self):
+        days = (date.today()-current_user.join_date).days
+        w = current_user.wellness * (days)
+
+        if current_user.bmi >= 18.5 and current_user.bmi < 25:
+            bmi_score = 10
+        else:
+            if current_user.bmi < 18.5:
+                LIMIT = 18.5
+            else:
+                LIMIT = 25
+            bmi_score = abs(current_user.bmi - LIMIT)/LIMIT * 10
+
+        LIFESTYLES = {
+            "sedantary" : 1.2, 
+            "slightly-active" : 1.375, 
+            "moderately-active" : 1.55, 
+            "active" : 1.725, 
+            "very-active" : 1.9
+            }
+
+        net_cal = current_user.bmr*LIFESTYLES[current_user.lifestyle]
+        act_cal = net_cal-current_user.bmr
+
+        # print(net_cal, act_cal)
+        
+        cal_score = abs(net_cal+self.calorie-self.nutrition)/current_user.bmr * 40
+        # print(cal_score)
+
+        # calorie_score = abs(net_cal-self.calorie)/net_cal * 20
+        # nutrition_score = abs(net_cal-self.nutrition*1000)/net_cal * 20
+
+        sleep_score = abs(self.sleep-420)/420 * 10
+        if current_user.gender == 'male':
+            water_score = abs(self.water-3.7)/3.7 * 10
+        else:
+            water_score = abs(self.water-2.7)/2.7 * 10
+
+        activity_score = self.activity_rating*2 + word_count_score(self.activity)
+        learning_score = self.learning_rating*2 + word_count_score(self.learning)
+
+        # print(bmi_score, calorie_score, nutrition_score, sleep_score, water_score, activity_score, learning_score)
+
+        w += bmi_score + cal_score + sleep_score + water_score + activity_score + learning_score
+        w /= (days+1)
+        w = round(w, 2)
+        self.wellness = w
+        current_user.wellness = w
