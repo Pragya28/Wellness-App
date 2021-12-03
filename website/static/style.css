@@ -31,7 +31,7 @@ ul li {
   color: aliceblue;
 }
 
-.bmi-page {
+/* .bmi-page {
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   background-image: url("img/water1.jpg");
   background-position: center center;
@@ -65,7 +65,7 @@ ul li {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
-}
+} */
 
 div.stars {
   width: 270px;
