@@ -2,12 +2,23 @@ from flask import Flask
 from os import path, environ, remove, makedirs
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_wtf.csrf import CSRFProtect
+from flask_cors import CORS
 import json
 
 db = SQLAlchemy()
+csrf = CSRFProtect()
+cors = CORS()
+
 
 def create_app(test_config=None):
     app = Flask(__name__)
+
+    app.config.update(
+        SESSION_COOKIE_SECURE=True,
+        SESSION_COOKIE_HTTPONLY=True,
+        SESSION_COOKIE_SAMESITE='Lax',
+    )
 
     if test_config is not None:
         app.config.from_file(test_config, load=json.load)
@@ -18,7 +29,18 @@ def create_app(test_config=None):
         app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{db_name}'
 
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
     db.init_app(app)
+    csrf.init_app(app)
+    cors.init_app(app,
+        origins=[
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css",
+            "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css",
+            "https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css",
+            "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        ],
+        methods=["GET", "POST"] 
+    )
 
     from .views import views
     from .auth import auth
@@ -26,7 +48,7 @@ def create_app(test_config=None):
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-    from .models import User, Data, CalorieData
+    from .models import User, Data, CalorieData, FoodData
     create_database(app, db_name)
 
     login_manager = LoginManager()
