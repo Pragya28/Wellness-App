@@ -23,6 +23,7 @@ block content %}
       </li>
     </ul>
 
+    {% if data %}
     <p class="text-center">
       You burned {{total}} calories today. Here is the distribution.
     </p>
@@ -51,6 +52,7 @@ block content %}
         </tbody>
       </table>
     </div>
+    {% endif %}
 
     <div class="calorie-form">
       <form method="post">

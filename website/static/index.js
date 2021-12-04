@@ -50,3 +50,25 @@ function populate(sec1, sec2) {
     s2.options.add(newopt);
   }
 }
+
+function enableform() {
+  var i;
+  var inputs = document.getElementsByTagName("input");
+  for (i = 1; i < inputs.length; i++) {
+    inputs[i].disabled = false;
+  }
+
+  var selects = document.getElementsByTagName("select");
+  for (i = 0; i < selects.length; i++) {
+    selects[i].disabled = false;
+  }
+
+  var edit_btn = document.getElementById("edit");
+  edit_btn.hidden = true;
+
+  var save_btn = document.getElementById("save");
+  save_btn.hidden = false;
+
+  var cancel_btn = document.getElementById("cancel");
+  cancel_btn.hidden = false;
+}

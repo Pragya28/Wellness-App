@@ -35,6 +35,16 @@ class User(db.Model, UserMixin):
         self.bmi = calculate_bmi(height, weight)
         self.bmr = calculate_bmr(height, weight, age, gender)
 
+    def update_profile(self, fullname, gender, age, height, weight, lifestyle):
+        self.fullname = fullname
+        self.gender = gender 
+        self.age = age
+        self.height = height
+        self.weight = weight
+        self.lifestyle = lifestyle
+        self.bmi = calculate_bmi(height, weight)
+        self.bmr = calculate_bmr(height, weight, age, gender)
+
 
 class CalorieData(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -126,16 +136,13 @@ class Data(db.Model):
             "very-active" : 1.9
             }
 
-        net_cal = current_user.bmr*LIFESTYLES[current_user.lifestyle]
-        act_cal = net_cal-current_user.bmr
+        if current_user:
+            net_cal = current_user.bmr*LIFESTYLES[current_user.lifestyle]
+        else:
+            net_cal = 0
 
-        # print(net_cal, act_cal)
-        
+        print(net_cal, self.calorie, self.nutrition)
         cal_score = abs(net_cal+self.calorie-self.nutrition)/current_user.bmr * 40
-        # print(cal_score)
-
-        # calorie_score = abs(net_cal-self.calorie)/net_cal * 20
-        # nutrition_score = abs(net_cal-self.nutrition*1000)/net_cal * 20
 
         sleep_score = abs(self.sleep-420)/420 * 10
         if current_user.gender == 'male':
