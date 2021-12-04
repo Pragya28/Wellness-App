@@ -1,9 +1,21 @@
-{% extends "base.html" %} {% block title %} Sign Up {% endblock %} {% block
+{% extends "base.html" %} {% block title %} My Profile {% endblock %} {% block
 content %}
 <div class="container">
-  <h3 class="display-3 text-center">Sign Up</h3>
-  <form method="post">
+  <h3 class="display-3 text-center">Profile</h3>
+  <form method="post" id="profile">
     <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <div class="form-group mb-3 row">
+      <div class="col-sm-2">
+        <label for="username" class="col-form-label"> Username </label>
+      </div>
+      <div class="col-sm-10">{{user.username}}</div>
+    </div>
+    <div class="form-group mb-3 row">
+      <div class="col-sm-2">
+        <label for="email" class="col-form-label"> Email Address </label>
+      </div>
+      <div class="col-sm-10">{{user.email}}</div>
+    </div>
     <div class="form-group mb-3 row">
       <div class="col-sm-2">
         <label for="name" class="col-form-label"> Full Name </label>
@@ -16,66 +28,8 @@ content %}
           class="form-control"
           placeholder="Enter Full Name"
           required
-        />
-      </div>
-    </div>
-    <div class="form-group mb-3 row">
-      <div class="col-sm-2">
-        <label for="username" class="col-form-label"> Username </label>
-      </div>
-      <div class="col-sm-10">
-        <input
-          type="text"
-          name="username"
-          id="username"
-          class="form-control"
-          placeholder="Enter Username"
-          required
-        />
-      </div>
-    </div>
-    <div class="form-group mb-3 row">
-      <div class="col-sm-2">
-        <label for="email" class="col-form-label"> Email Address </label>
-      </div>
-      <div class="col-sm-10">
-        <input
-          type="email"
-          name="email"
-          id="email"
-          class="form-control"
-          placeholder="Enter Email Address"
-          required
-        />
-      </div>
-    </div>
-    <div class="form-group mb-3 row">
-      <div class="col-sm-2">
-        <label for="password" class="col-form-label"> Password </label>
-      </div>
-      <div class="col-sm-10">
-        <input
-          type="password"
-          name="password1"
-          id="password1"
-          class="form-control"
-          placeholder="Enter Password"
-          required
-        />
-      </div>
-    </div>
-    <div class="form-group mb-3 row">
-      <div class="col-sm-2">
-        <label for="password" class="col-form-label"> Confirm Password </label>
-      </div>
-      <div class="col-sm-10">
-        <input
-          type="password"
-          name="password2"
-          id="password2"
-          class="form-control"
-          placeholder="Confirm Password"
-          required
+          value="{{user.fullname}}"
+          disabled
         />
       </div>
     </div>
@@ -91,6 +45,8 @@ content %}
           class="form-control"
           placeholder="Enter Age"
           required
+          value="{{user.age}}"
+          disabled
         />
       </div>
     </div>
@@ -98,6 +54,7 @@ content %}
       <div class="col-sm-2">
         <label for="gender" class="col-form-label">Gender</label>
       </div>
+      {% if user.gender == "male" %}
       <div class="col-sm-10">
         <div class="form-check form-check-inline">
           <input
@@ -107,6 +64,8 @@ content %}
             class="form-check-input"
             value="male"
             required
+            checked
+            disabled
           />
           <label for="male" class="form-check-label">Male</label>
         </div>
@@ -118,10 +77,40 @@ content %}
             class="form-check-input"
             value="female"
             required
+            disabled
           />
           <label for="female" class="form-check-label">Female</label>
         </div>
       </div>
+      {% else %}
+      <div class="col-sm-10">
+        <div class="form-check form-check-inline">
+          <input
+            type="radio"
+            name="genderOptions"
+            id="male"
+            class="form-check-input"
+            value="male"
+            required
+            disabled
+          />
+          <label for="male" class="form-check-label">Male</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input
+            type="radio"
+            name="genderOptions"
+            id="female"
+            class="form-check-input"
+            value="female"
+            required
+            checked
+            disabled
+          />
+          <label for="female" class="form-check-label">Female</label>
+        </div>
+      </div>
+      {% endif %}
     </div>
     <div class="form-group mb-3 row">
       <div class="col-sm-2">
@@ -135,6 +124,8 @@ content %}
           class="form-control"
           placeholder="Enter Height (in cms)"
           required
+          value="{{user.height}}"
+          disabled
         />
       </div>
     </div>
@@ -150,6 +141,8 @@ content %}
           class="form-control"
           placeholder="Enter Weight (in kgs)"
           required
+          value="{{user.weight}}"
+          disabled
         />
       </div>
     </div>
@@ -158,22 +151,69 @@ content %}
         <label for="lifestyle" class="col-label-text">Activity Level</label>
       </div>
       <div class="col-sm-10">
-        <select name="lifestyle" id="lifestyle" class="form-select">
-          <option value="not_selected" selected>
-            Select your activity level
-          </option>
+        <select
+          name="lifestyle"
+          id="lifestyle"
+          class="form-select"
+          required
+          disabled
+        >
+          <option></option>
+          {% if user.lifestyle == "sedantary" %}
+          <option value="sedantary" selected>Sedantary Lifestyle</option>
+          {% else %}
           <option value="sedantary">Sedantary Lifestyle</option>
+          {% endif %} {% if user.lifestyle == "slightly-active" %}
+          <option value="slightly-active" selected>Slightly Active</option>
+          {% else %}
           <option value="slightly-active">Slightly Active</option>
+          {% endif %} {% if user.lifestyle == "moderately-active" %}
+          <option value="moderately-active" selected>Moderately Active</option>
+          {% else %}
           <option value="moderately-active">Moderately Active</option>
+          {% endif %} {% if user.lifestyle == "active" %}
+          <option value="active" selected>Active Lifestyle</option>
+          {% else %}
           <option value="active">Active Lifestyle</option>
+          {% endif %} {% if user.lifestyle == "very-active" %}
+          <option value="very-active" selected>Very Active Lifestyle</option>
+          {% else %}
           <option value="very-active">Very Active Lifestyle</option>
+          {% endif %}
         </select>
       </div>
     </div>
     <br />
-    <button type="submit" class="btn btn-primary" value="submit">
-      Create Account
+    <button
+      type="submit"
+      class="btn btn-success"
+      id="save"
+      name="save"
+      value="save"
+      hidden
+    >
+      Save
+    </button>
+    <button
+      type="submit"
+      class="btn btn-danger"
+      id="cancel"
+      name="cancel"
+      value="cancel"
+      hidden
+    >
+      Cancel
     </button>
   </form>
+  <button
+    type="submit"
+    class="btn btn-primary"
+    id="edit"
+    name="edit"
+    value="edit"
+    onclick="javascript:enableform()"
+  >
+    Edit
+  </button>
 </div>
 {% endblock %}

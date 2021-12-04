@@ -24,19 +24,16 @@ def start():
 @login_required
 def home():
     data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
-    if data:
-        data.calculate_wellness()
-    else:
+    if not data:
         data = Data(current_user.id)
         db.session.add(data)
+        db.session.commit()
+    
+    data.calculate_wellness()
     db.session.commit()
 
     return render_template("home.html", user=current_user)
 
-@views.route('/profile')
-@login_required
-def profile():
-    return render_template("profile.html", user=current_user)
 
 @views.route('/bmi')
 @login_required
@@ -75,17 +72,20 @@ def calorie():
             flash(SAVE_MSG, category="success")
         
     old_data = CalorieData.query.filter_by(user_id=current_user.id, date=date.today()).first()
-    total = total_calories(old_data)
+    if old_data:
+        total = total_calories(old_data)
+    else:
+        total = 0
     data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
-    if data and data.calorie != total:
+
+    if data:
         data.add_calorie(total)
         data.calculate_wellness()
-        db.session.commit()
     else:
         data = Data(current_user.id)
         data.add_calorie(total)
         db.session.add(data)
-        db.session.commit()
+    db.session.commit()
     flash(SAVE_MSG, category="success")    
     return render_template("calorie.html", user=current_user, data=old_data, total=total)
 
@@ -207,7 +207,7 @@ def nutrition():
     old_data = FoodData.query.filter_by(user_id=current_user.id, date=date.today())
     total = total_calories(old_data)
     data = Data.query.filter_by(user_id=current_user.id, date=date.today()).first()
-    if data and data.nutrition != total:
+    if data:
         data.add_nutrition(total)
         data.calculate_wellness()
     else:
