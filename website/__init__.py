@@ -10,9 +10,6 @@ from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager
 from flask_cors import CORS
 
-from .views import views
-from .auth import auth
-from .models import User
 
 
 db = SQLAlchemy()
@@ -54,12 +51,16 @@ def create_app(test_config=None):
         methods=["GET", "POST"]
     )
 
+    from .views import views
+    from .auth import auth
 
     app.register_blueprint(views, url_prefix="/")
     app.register_blueprint(auth, url_prefix="/")
 
-    create_database(app, db_name)
+    from .models import User
 
+    create_database(app, db_name)
+    
     login_manager = LoginManager()
     login_manager.login_view = "auth.login"
     login_manager.init_app(app)
